@@ -1,11 +1,14 @@
-
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 repositories {
+    mavenCentral()
+    jcenter()
     mavenLocal()
 }
 
 plugins {
-    kotlin("jvm") version aloha.Versions.kotlin
+    kotlin("jvm") version "1.4.10"
     application
 }
 
@@ -15,6 +18,7 @@ application {
 }
 
 dependencies {
+    testImplementation("org.testng:testng:${Versions.testng}")
 }
 
 tasks {
