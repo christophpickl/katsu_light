@@ -1,1 +1,1 @@
-rootProject.name = "aloha"
+rootProject.name = "katsu_light"

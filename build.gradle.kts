@@ -12,13 +12,24 @@ plugins {
     application
 }
 
-
 application {
-    mainClassName = "asdf"
+    mainClassName = "katsu.Katsu"
 }
 
 dependencies {
+    implementation("org.kodein.di:kodein-di-generic-jvm:${Versions.kodein}")
+//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jackson}")
+    implementation("io.github.microutils:kotlin-logging:${Versions.klogging}")
+    implementation("ch.qos.logback:logback-classic:${Versions.logback}")
+//    implementation("joda-time:joda-time:${Versions.joda}")
+    implementation("com.google.guava:guava:${Versions.guava}")
+
     testImplementation("org.testng:testng:${Versions.testng}")
+//    testImplementation("com.willowtreeapps.assertk:assertk-jvm:${Versions.assertk}")
+//    testImplementation("io.mockk:mockk:${Versions.mockk}")
+    // testImplementation("org.skyscreamer:jsonassert:${Versions.jsonassert}")
+    // testImplementation("com.jayway.jsonpath:json-path:${Versions.jsonPath}")
+    // testImplementation("com.github.tomakehurst:wiremock-jre8:${Versions.wiremock}")
 }
 
 tasks {

@@ -2,3 +2,5 @@
 build/
 buildSrc/.gradle/
 buildSrc/.build/
+.idea/
+out/
