@@ -16,24 +16,36 @@ class JTreatmentList(
         bus: EventBus
 ) : JList<Treatment>() {
 
-    private val log = logger {}
     val treatmentsModel = DefaultListModel<Treatment>()
+
+    private var consumeEvent = false
+    private val log = logger {}
 
     init {
         bus.register(this)
         model = treatmentsModel
         cellRenderer = TreatmentCellRenderer()
         preferredSize = Dimension(100, preferredSize.height)
-//        maximumSize = Dimension(30, maximumSize.height)
         selectionMode = ListSelectionModel.SINGLE_SELECTION
         addListSelectionListener { e ->
-            if (!e.valueIsAdjusting && selectedIndex != -1) { // if clearSelection() => index is -1
-                val selectedTreatment = treatmentsModel.elementAt(selectedIndex)
-                log.debug { "list changed to: $selectedTreatment" }
-                bus.post(TreatmentSelectedUIEvent(selectedTreatment))
+            if (consumeEvent) {
+                consumeEvent = false
+                log.trace { "consuming selection event" }
+            } else {
+                if (!e.valueIsAdjusting && selectedIndex != -1) { // if clearSelection() => index is -1
+                    val selectedTreatment = treatmentsModel.elementAt(selectedIndex)
+                    log.debug { "list changed to: $selectedTreatment" }
+                    bus.post(TreatmentSelectedUIEvent(selectedTreatment))
+                }
             }
         }
     }
+
+    fun selectedIndexWithoutEvent(index: Int) {
+        consumeEvent = true
+        selectedIndex = index
+    }
+
 }
 
 private class TreatmentCellRenderer : ListCellRenderer<Treatment> {

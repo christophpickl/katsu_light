@@ -9,7 +9,7 @@ data class Treatment(
 ) : Comparable<Treatment> {
     override fun compareTo(other: Treatment) = other.number - number
 
-    val isNew = number == -1
+    val isPrototype = number == -1
 
     companion object {
         fun prototype() = Treatment(

@@ -43,7 +43,7 @@ class TreatmentDetailController(
     }
 
     private fun uiInit(treatment: Treatment) {
-        if(treatment.isNew) {
+        if(treatment.isPrototype) {
             uiReset()
         } else {
             treatmentDetail.txtTitle.text = treatment.longTitle

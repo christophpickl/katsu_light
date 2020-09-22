@@ -10,8 +10,9 @@ import javax.swing.JOptionPane
 
 class ClientCrudController(
         bus: EventBus,
+        private val model: Model,
         private val clientDetail: JClientDetail,
-        private val model: Model
+        private val treatmentCrud: TreatmentCrudController
 ) {
 
     private val log = logger {}
@@ -30,6 +31,8 @@ class ClientCrudController(
 
         model.currentClient.firstName = clientDetail.inpFirstName.text
         model.currentClient.text = clientDetail.inpText.text
+
+        treatmentCrud.updateModel()
 
         if(model.isCurrentClientUnsaved) {
             model.addCurrentClient()

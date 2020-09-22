@@ -1,5 +1,6 @@
 package katsu.model
 
+import java.time.LocalDateTime
 import java.util.*
 
 data class Client(
@@ -16,5 +17,10 @@ data class Client(
                 text = ""
         )
     }
+
     val debugString get() = "Client[$firstName, treatments: ${treatments.size}]"
+
+    fun nextTreatment() = Treatment.prototype().copy(
+            number = treatments.size + 1
+    )
 }

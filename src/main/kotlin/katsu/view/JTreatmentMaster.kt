@@ -2,29 +2,44 @@ package katsu.view
 
 import com.google.common.eventbus.EventBus
 import katsu.Debug
-import katsu.model.Treatment
-import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
-import java.time.format.DateTimeFormatter
-import javax.swing.JLabel
+import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JScrollPane
-import javax.swing.JTextArea
 
 class JTreatmentMaster(
         bus: EventBus,
         treatmentList: JTreatmentList,
-        private val treatmentDetail: JTreatmentDetail
-) : JPanel(BorderLayout()) {
+        treatmentDetail: JTreatmentDetail
+) : JPanel(GridBagLayout()) {
 
     init {
         bus.register(this)
-        if(Debug.bgColors) background = Color.BLUE
+        if (Debug.bgColors) background = Color.BLUE
 
-        add(JScrollPane(treatmentList), BorderLayout.WEST)
-        add(treatmentDetail, BorderLayout.CENTER)
+        val c = GridBagConstraints()
+        c.gridx = 0
+        c.gridy = 0
+        c.weightx = 0.1
+        c.weighty = 1.0
+        c.fill = GridBagConstraints.BOTH
+        add(JScrollPane(treatmentList), c)
+
+        c.gridy++
+        c.weighty = 0.0
+        c.fill = GridBagConstraints.NONE
+        // TODO disable, if no client selected (at app startup)
+        add(JButton("New Treatment").apply { addActionListener { bus.post(TreatmentNewUIEvent()) } }, c)
+
+        c.gridy = 0
+        c.gridx++
+        c.gridheight = 2
+        c.weightx = 1.0
+        c.weighty = 1.0
+        c.fill = GridBagConstraints.BOTH
+        add(treatmentDetail, c)
     }
 
 //    @Subscribe

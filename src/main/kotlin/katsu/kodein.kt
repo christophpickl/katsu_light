@@ -5,6 +5,7 @@ import katsu.controller.ClientCrudController
 import katsu.controller.ClientListController
 import katsu.controller.ClientDetailController
 import katsu.controller.MainController
+import katsu.controller.TreatmentCrudController
 import katsu.controller.TreatmentDetailController
 import katsu.controller.TreatmentListController
 import katsu.logic.DataLoader
@@ -51,10 +52,11 @@ fun applicationKodein() = Kodein.Module("Application Module") {
     bind<MainController>() with eagerSingleton { MainController(instance(), instance(), instance(), instance()) }
     bind<ClientListController>() with eagerSingleton { ClientListController(instance(), instance(), instance()) }
     bind<ClientDetailController>() with eagerSingleton { ClientDetailController(instance(), instance(), instance()) }
-    bind<ClientCrudController>() with eagerSingleton { ClientCrudController(instance(), instance(), instance()) }
+    bind<ClientCrudController>() with eagerSingleton { ClientCrudController(instance(), instance(), instance(), instance()) }
 
     bind<TreatmentListController>() with eagerSingleton { TreatmentListController(instance(), instance(), instance()) }
     bind<TreatmentDetailController>() with eagerSingleton { TreatmentDetailController(instance(), instance(), instance()) }
+    bind<TreatmentCrudController>() with eagerSingleton { TreatmentCrudController(instance(), instance()) }
 
     // app
     bind<ApplicationStarter>() with singleton { ApplicationStarter(instance()) }
