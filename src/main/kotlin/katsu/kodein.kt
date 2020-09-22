@@ -5,16 +5,22 @@ import katsu.controller.ClientCrudController
 import katsu.controller.ClientListController
 import katsu.controller.ClientDetailController
 import katsu.controller.MainController
+import katsu.controller.TreatmentDetailController
+import katsu.controller.TreatmentListController
 import katsu.logic.DataLoader
 import katsu.logic.InMemoryDataLoader
 import katsu.model.Client
 import katsu.model.Model
-import katsu.view.ClientDetailPanel
+import katsu.model.Treatment
+import katsu.view.JClientDetail
 import katsu.view.ClientList
-import katsu.view.ClientListPanel
-import katsu.view.ClientMasterPanel
-import katsu.view.MainPanel
-import katsu.view.MainWindow
+import katsu.view.JClientList
+import katsu.view.JClientMaster
+import katsu.view.JMainPanel
+import katsu.view.JMainWindow
+import katsu.view.JTreatmentDetail
+import katsu.view.JTreatmentList
+import katsu.view.JTreatmentMaster
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.eagerSingleton
@@ -27,21 +33,28 @@ fun applicationKodein() = Kodein.Module("Application Module") {
 
     // logic
     bind<DataLoader>() with singleton { InMemoryDataLoader() }
-    bind<Model>() with singleton { Model(instance(), arrayListOf(), Client.prototype(), null) }
+    bind<Model>() with singleton { Model(instance(), arrayListOf(), Client.prototype(), Treatment.prototype()) }
 
     // view
-    bind<MainWindow>() with singleton { MainWindow(instance()) }
-    bind<MainPanel>() with singleton { MainPanel(instance(), instance()) }
-    bind<ClientMasterPanel>() with singleton { ClientMasterPanel(instance(), instance()) }
-    bind<ClientListPanel>() with singleton { ClientListPanel(instance(), instance()) }
+    bind<JMainWindow>() with singleton { JMainWindow(instance()) }
+    bind<JMainPanel>() with singleton { JMainPanel(instance(), instance()) }
+    bind<JClientMaster>() with singleton { JClientMaster(instance(), instance(), instance()) }
+    bind<JClientList>() with singleton { JClientList(instance()) }
     bind<ClientList>() with singleton { ClientList(instance()) }
-    bind<ClientDetailPanel>() with singleton { ClientDetailPanel() }
+    bind<JClientDetail>() with singleton { JClientDetail() }
+
+    bind<JTreatmentList>() with singleton { JTreatmentList(instance()) }
+    bind<JTreatmentMaster>() with singleton { JTreatmentMaster(instance(), instance(), instance()) }
+    bind<JTreatmentDetail>() with singleton { JTreatmentDetail() }
 
     // controller
     bind<MainController>() with eagerSingleton { MainController(instance(), instance(), instance(), instance()) }
     bind<ClientListController>() with eagerSingleton { ClientListController(instance(), instance(), instance()) }
     bind<ClientDetailController>() with eagerSingleton { ClientDetailController(instance(), instance(), instance()) }
     bind<ClientCrudController>() with eagerSingleton { ClientCrudController(instance(), instance(), instance()) }
+
+    bind<TreatmentListController>() with eagerSingleton { TreatmentListController(instance(), instance(), instance()) }
+    bind<TreatmentDetailController>() with eagerSingleton { TreatmentDetailController(instance(), instance(), instance()) }
 
     // app
     bind<ApplicationStarter>() with singleton { ApplicationStarter(instance()) }

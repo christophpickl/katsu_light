@@ -16,4 +16,5 @@ data class Client(
                 text = ""
         )
     }
+    val debugString get() = "Client[$firstName, treatments: ${treatments.size}]"
 }

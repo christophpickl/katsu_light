@@ -1,7 +1,6 @@
 package katsu.view
 
 import com.google.common.eventbus.EventBus
-import com.google.common.eventbus.Subscribe
 import katsu.model.Client
 import mu.KotlinLogging.logger
 import java.awt.BorderLayout
@@ -10,7 +9,6 @@ import java.awt.Dimension
 import java.util.*
 import javax.swing.DefaultListCellRenderer
 import javax.swing.DefaultListModel
-import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JList
 import javax.swing.JPanel
@@ -18,17 +16,11 @@ import javax.swing.JScrollPane
 import javax.swing.ListCellRenderer
 import javax.swing.ListSelectionModel
 
-class ClientListPanel(
-        bus: EventBus,
+class JClientList(
         clientList: ClientList
 ) : JPanel(BorderLayout()) {
     init {
         add(JScrollPane(clientList), BorderLayout.CENTER)
-        val btnCreate = JButton("Create New")
-        btnCreate.addActionListener {
-            bus.post(ClientCreateEvent())
-        }
-        add(btnCreate, BorderLayout.SOUTH)
     }
 }
 
@@ -48,7 +40,7 @@ class ClientList(
             if (!e.valueIsAdjusting && selectedIndex != -1) { // if clearSelection() => index is -1
                 val selectedClient = clientsModel.elementAt(selectedIndex)
                 log.debug { "List selection changed to: $selectedClient" }
-                bus.post(ClientSelectedEvent(selectedClient))
+                bus.post(ClientSelectedUIEvent(selectedClient))
             }
         }
     }

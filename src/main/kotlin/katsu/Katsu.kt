@@ -26,7 +26,8 @@ object Katsu {
 }
 
 object Debug {
-    val bgColors = true
+//    const val bgColors = false
+    const val bgColors = true
 }
 
 class ApplicationStarter(

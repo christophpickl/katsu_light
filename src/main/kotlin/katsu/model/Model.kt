@@ -1,6 +1,8 @@
 package katsu.model
 
 import com.google.common.eventbus.EventBus
+import mu.KotlinLogging
+import mu.KotlinLogging.logger
 import kotlin.properties.Delegates
 
 //data class Model(
@@ -22,9 +24,10 @@ class Model(
         private val bus: EventBus,
         clients: MutableList<Client>,
         currentClient: Client,
-        currentTreatment: Treatment?
+        currentTreatment: Treatment
 ) {
 
+    private val log = logger {}
     val isCurrentClientUnsaved: Boolean get() = !_clients.contains(currentClient)
 
     val clients: List<Client> get() = _clients
@@ -43,19 +46,13 @@ class Model(
     private val _clients: MutableList<Client> = clients
 
     var currentClient: Client by Delegates.observable(currentClient) { _, old, new ->
-        println("currentClient changed from $old to $new")
+        log.info { "currentClient changed from $old to $new" }
         bus.post(CurrentClientModelEvent(new))
     }
 
-    var currentTreatment: Treatment? by Delegates.observable(currentTreatment) { _, old, new ->
-        println("currentTreatment changed from $old to $new")
+    var currentTreatment: Treatment by Delegates.observable(currentTreatment) { _, old, new ->
+        log.info { "currentTreatment changed from $old to $new" }
+        bus.post(CurrentTreatmentModelEvent(new))
+
     }
 }
-
-data class CurrentClientModelEvent(
-        val currentClient: Client
-)
-data class ClientAddedModelEvent(
-        val client: Client,
-        val position: Int
-)

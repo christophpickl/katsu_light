@@ -3,14 +3,14 @@ package katsu.controller
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import katsu.model.Model
-import katsu.view.ClientDetailPanel
-import katsu.view.ClientSaveRequestEvent
+import katsu.view.JClientDetail
+import katsu.view.ClientSaveRequestUIEvent
 import mu.KotlinLogging.logger
 import javax.swing.JOptionPane
 
 class ClientCrudController(
         bus: EventBus,
-        private val clientDetailPanel: ClientDetailPanel,
+        private val clientDetail: JClientDetail,
         private val model: Model
 ) {
 
@@ -21,15 +21,15 @@ class ClientCrudController(
     }
 
     @Subscribe
-    fun onClientSaveRequestEvent(event: ClientSaveRequestEvent) {
+    fun onClientSaveRequestEvent(event: ClientSaveRequestUIEvent) {
         log.debug { "onClientSaveRequestEvent" }
-        if (clientDetailPanel.inpFirstName.text.isEmpty()) {
+        if (clientDetail.inpFirstName.text.isEmpty()) {
             JOptionPane.showMessageDialog(null, "First name must not be empty!")
             return
         }
 
-        model.currentClient.firstName = clientDetailPanel.inpFirstName.text
-        model.currentClient.text = clientDetailPanel.inpText.text
+        model.currentClient.firstName = clientDetail.inpFirstName.text
+        model.currentClient.text = clientDetail.inpText.text
 
         if(model.isCurrentClientUnsaved) {
             model.addCurrentClient()

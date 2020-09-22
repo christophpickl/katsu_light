@@ -4,23 +4,23 @@ import com.google.common.eventbus.EventBus
 import katsu.logic.DataLoader
 import katsu.model.Model
 import katsu.view.ClientsLoadedEvent
-import katsu.view.MainWindow
+import katsu.view.JMainWindow
 import mu.KotlinLogging.logger
 
 class MainController(
         private val bus: EventBus,
         private val dataLoader: DataLoader,
-        private val mainWindow: MainWindow,
+        private val mainWindow: JMainWindow,
         private val model: Model
 ) {
     private val log = logger {}
 
-    //    private val data = TemporaryData()
     init {
         bus.register(this)
     }
 
     fun show() {
+        log.info { "show()" }
         val clients = dataLoader.load().clients
         model.load(clients)
         bus.post(ClientsLoadedEvent())
@@ -29,23 +29,3 @@ class MainController(
     }
 
 }
-
-
-//private class TemporaryData {
-//    private val clientsById = mutableMapOf<UUID, Client>()
-//
-//    fun load(clients: List<Client>) {
-//        clientsById.putAll(clients.map { it.id to it })
-//    }
-//
-//    fun add(client: Client) {
-//        require(!client.isUnsaved)
-//        require(clientsById[client.id] == null)
-//        clientsById[client.id] = client
-//    }
-//
-//    fun update(client: Client) {
-//        require(clientsById[client.id] != null)
-//        clientsById[client.id] = client
-//    }
-//}

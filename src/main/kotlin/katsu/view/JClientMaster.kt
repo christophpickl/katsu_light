@@ -1,26 +1,31 @@
 package katsu.view
 
 import com.google.common.eventbus.EventBus
+import katsu.Debug
+import java.awt.Color
+import java.awt.FlowLayout
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
-import javax.swing.JButton
 import javax.swing.JPanel
+import javax.swing.JSplitPane
 
-class ClientMasterPanel(
+
+class JClientMaster(
         bus: EventBus,
-        clientDetailPanel: ClientDetailPanel
+        clientDetail: JClientDetail,
+        treatments: JTreatmentMaster
 ) : JPanel(GridBagLayout()) {
 
-//    TODO private val treatmentPanel = TreatmentPanel(bus)
-
     init {
-        val buttonPanel = JPanel()
-        val btnSave = JButton("Save")
-        btnSave.addActionListener {
-            bus.post(ClientSaveRequestEvent())
-        }
-        buttonPanel.add(btnSave)
+        val buttonPanel = JPanel(FlowLayout(FlowLayout.LEFT))
+        if(Debug.bgColors) buttonPanel.background = Color.PINK
 
+        buttonPanel.addButton("Save Client") {
+            bus.post(ClientSaveRequestUIEvent())
+        }
+        buttonPanel.addButton("New Client") {
+            bus.post(ClientCreateRequestUIEvent())
+        }
 
         val c = GridBagConstraints()
         c.gridx = 0
@@ -28,15 +33,18 @@ class ClientMasterPanel(
 
         c.weightx = 1.0
         c.weighty = 0.0
+        c.anchor = GridBagConstraints.WEST
         add(buttonPanel, c)
 
+        val splitPane = JSplitPane(JSplitPane.VERTICAL_SPLIT, clientDetail, treatments).apply {
+            isOneTouchExpandable = true
+//            dividerLocation = 150
+            resizeWeight = 0.8
+        }
         c.gridy++
         c.weighty = 1.0
         c.fill = GridBagConstraints.BOTH
-        add(clientDetailPanel, c)
-//        c.gridy++
-//        c.weighty = 0.5
-//        add(treatmentPanel, c)
+        add(splitPane, c)
     }
 
 //    private fun readClient() = Client(
@@ -59,4 +67,3 @@ class ClientMasterPanel(
 //        return copy(treatments = updatedTreatments.values.toList().sorted())
 //    }
 }
-

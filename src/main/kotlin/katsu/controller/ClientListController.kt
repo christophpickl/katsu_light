@@ -2,12 +2,11 @@ package katsu.controller
 
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
-import katsu.model.Client
 import katsu.model.ClientAddedModelEvent
 import katsu.model.Model
-import katsu.view.ClientCreateEvent
+import katsu.view.ClientCreateRequestUIEvent
 import katsu.view.ClientList
-import katsu.view.ClientSelectedEvent
+import katsu.view.ClientSelectedUIEvent
 import katsu.view.ClientsLoadedEvent
 import mu.KotlinLogging.logger
 
@@ -29,13 +28,13 @@ class ClientListController(
     }
 
     @Subscribe
-    fun onClientSelectedEvent(@Suppress("unused") event: ClientSelectedEvent) {
+    fun onClientSelectedEvent(@Suppress("unused") event: ClientSelectedUIEvent) {
         log.debug { "onClientSelectedEvent" }
         model.currentClient = event.client
     }
 
     @Subscribe
-    fun onClientCreateEvent(event: ClientCreateEvent) {
+    fun onClientCreateEvent(event: ClientCreateRequestUIEvent) {
         log.debug { "onClientCreateEvent" }
         clientList.clearSelection()
     }

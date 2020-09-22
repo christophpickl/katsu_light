@@ -1,7 +1,6 @@
 package katsu.view
 
 import com.google.common.eventbus.EventBus
-import com.google.common.eventbus.Subscribe
 import katsu.model.Treatment
 import mu.KotlinLogging.logger
 import java.awt.Component
@@ -13,7 +12,9 @@ import javax.swing.JList
 import javax.swing.ListCellRenderer
 import javax.swing.ListSelectionModel
 
-class TreatmentListPanel(bus: EventBus) : JList<Treatment>() {
+class JTreatmentList(
+        bus: EventBus
+) : JList<Treatment>() {
 
     private val log = logger {}
     val treatmentsModel = DefaultListModel<Treatment>()
@@ -22,30 +23,17 @@ class TreatmentListPanel(bus: EventBus) : JList<Treatment>() {
         bus.register(this)
         model = treatmentsModel
         cellRenderer = TreatmentCellRenderer()
-        preferredSize = Dimension(80, preferredSize.height)
+        preferredSize = Dimension(100, preferredSize.height)
+//        maximumSize = Dimension(30, maximumSize.height)
         selectionMode = ListSelectionModel.SINGLE_SELECTION
         addListSelectionListener { e ->
             if (!e.valueIsAdjusting && selectedIndex != -1) { // if clearSelection() => index is -1
                 val selectedTreatment = treatmentsModel.elementAt(selectedIndex)
                 log.debug { "list changed to: $selectedTreatment" }
-                bus.post(TreatmentSelectedEvent(selectedTreatment))
+                bus.post(TreatmentSelectedUIEvent(selectedTreatment))
             }
         }
     }
-
-//    @Subscribe
-//    fun onClientCreateEvent(event: ClientCreateEvent) {
-//        treatmentsModel.clear()
-//    }
-//
-//    @Subscribe
-//    fun onClientSelectedEvent(event: ClientSelectedEvent) {
-//        treatmentsModel.clear()
-//        treatmentsModel.addAll(event.client.treatments)
-//        if (event.client.treatments.isNotEmpty()) {
-//            selectedIndex = 0
-//        }
-//    }
 }
 
 private class TreatmentCellRenderer : ListCellRenderer<Treatment> {

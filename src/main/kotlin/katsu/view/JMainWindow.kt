@@ -1,21 +1,13 @@
 package katsu.view
 
-import com.google.common.eventbus.EventBus
-import com.google.common.eventbus.Subscribe
-import katsu.model.Model
 import java.awt.BorderLayout
 import java.awt.Dimension
-import java.awt.GridBagConstraints
-import java.awt.GridBagLayout
 import javax.swing.JFrame
-import javax.swing.JLabel
 import javax.swing.JPanel
-import javax.swing.JScrollPane
-import javax.swing.JTextField
 import javax.swing.WindowConstants
 
-class MainWindow(
-        val mainPanel: MainPanel
+class JMainWindow(
+        val mainPanel: JMainPanel
 ) : JFrame() {
 
     init {
@@ -31,9 +23,9 @@ class MainWindow(
     }
 }
 
-class MainPanel(
-        val clientMaster: ClientMasterPanel,
-        val clientList: ClientListPanel
+class JMainPanel(
+        clientMaster: JClientMaster,
+        clientList: JClientList
 ) : JPanel(BorderLayout()) {
     init {
         add(clientList, BorderLayout.WEST)

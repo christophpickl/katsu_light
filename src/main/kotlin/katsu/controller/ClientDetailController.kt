@@ -5,14 +5,14 @@ import com.google.common.eventbus.Subscribe
 import katsu.model.Client
 import katsu.model.CurrentClientModelEvent
 import katsu.model.Model
-import katsu.view.ClientCreateEvent
-import katsu.view.ClientDetailPanel
+import katsu.view.ClientCreateRequestUIEvent
+import katsu.view.JClientDetail
 import mu.KotlinLogging.logger
 
 class ClientDetailController(
         bus: EventBus,
         private val model: Model,
-        private val clientDetailPanel: ClientDetailPanel) {
+        private val clientDetail: JClientDetail) {
 
     private val log = logger {}
     init {
@@ -22,12 +22,12 @@ class ClientDetailController(
     @Subscribe
     fun onCurrentClientChangedEvent(event: CurrentClientModelEvent) {
         log.debug { "onCurrentClientChangedEvent: $event" }
-        clientDetailPanel.updateUi(model.currentClient)
-        clientDetailPanel.inpFirstName.requestFocus()
+        clientDetail.updateUi(model.currentClient)
+        clientDetail.inpFirstName.requestFocus()
     }
 
     @Subscribe
-    fun onClientCreateEvent(event: ClientCreateEvent) {
+    fun onClientCreateEvent(event: ClientCreateRequestUIEvent) {
         log.debug { "onClientCreateEvent" }
         model.currentClient = Client.prototype()
     }

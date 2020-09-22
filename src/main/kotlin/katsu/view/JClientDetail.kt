@@ -11,7 +11,7 @@ import javax.swing.JScrollPane
 import javax.swing.JTextArea
 import javax.swing.JTextField
 
-class ClientDetailPanel : JPanel(GridBagLayout()) {
+class JClientDetail : JPanel(GridBagLayout()) {
 
     val inpFirstName = JTextField()
     val inpText = JTextArea()
