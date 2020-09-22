@@ -4,7 +4,9 @@ import java.util.*
 
 data class Client(
         val id: UUID,
-        val firstName: String
+        val firstName: String,
+        val treatments: List<Treatment>,
+        val text: String
 ) {
     val isUnsaved = id == NO_ID
 

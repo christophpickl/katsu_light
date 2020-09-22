@@ -11,6 +11,7 @@ import katsu.view.ClientsLoadedEvent
 import katsu.view.MainWindow
 import mu.KotlinLogging.logger
 import java.util.*
+import javax.swing.JOptionPane
 
 class MainController(
         private val bus: EventBus,
@@ -33,6 +34,10 @@ class MainController(
     @Subscribe
     fun onClientSaveEvent(event: ClientSaveEvent) {
         val client = event.client
+        if (client.firstName.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "First name must not be empty!")
+            return
+        }
         val clientToPost = if (client.isUnsaved) {
             val client2 = client.copy(id = UUID.randomUUID())
             data.add(client2)

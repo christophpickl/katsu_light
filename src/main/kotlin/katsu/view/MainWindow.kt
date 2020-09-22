@@ -34,15 +34,14 @@ class MainWindow(
 
 class MainPanel(
         bus: EventBus
-) : JPanel() {
+) : JPanel(BorderLayout()) {
     init {
-        layout = BorderLayout()
-        add(ClientListPanel(bus), BorderLayout.WEST)
-
         val clientPanel = ClientMasterPanel(bus)
 
-        val centerPanel = JPanel()
+        val centerPanel = JPanel(BorderLayout())
         centerPanel.add(clientPanel)
+
+        add(ClientListPanel(bus), BorderLayout.WEST)
         add(centerPanel, BorderLayout.CENTER)
     }
 }

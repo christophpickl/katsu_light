@@ -1,6 +1,8 @@
 package katsu.logic
 
 import katsu.model.Client
+import katsu.model.Treatment
+import java.time.LocalDateTime
 import java.util.*
 
 interface DataLoader {
@@ -14,17 +16,24 @@ class InMemoryDataLoader : DataLoader {
             clients = listOf(
                     Client(
                             id = UUID.fromString("00000000-0000-0000-0000-000000000001"),
-                            firstName = "Max"
+                            firstName = "Max",
+                            text = "super ruhiger typ",
+                            treatments = listOf(
+                                    Treatment(2, LocalDateTime.now().minusDays(1), "fuehlt sich gut"),
+                                    Treatment(1, LocalDateTime.now().minusDays(2), "hab ich Bl und Due gemacht"),
+                            ),
                     ),
                     Client(
                             id = UUID.fromString("00000000-0000-0000-0000-000000000002"),
-                            firstName = "Anna"
-                    )
-            )
+                            firstName = "Anna",
+                            text = "hektisch; schulterbeschwerde",
+                            treatments = emptyList(),
+                    ),
+            ),
     )
 
     override fun save(data: Data) {
-
+        // no op
     }
 
 }
