@@ -2,6 +2,7 @@ package katsu.view
 
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
+import katsu.model.Model
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.GridBagConstraints
@@ -14,10 +15,8 @@ import javax.swing.JTextField
 import javax.swing.WindowConstants
 
 class MainWindow(
-        bus: EventBus
+        val mainPanel: MainPanel
 ) : JFrame() {
-
-    private val mainPanel = MainPanel(bus)
 
     init {
         title = "Katsu Light"
@@ -33,15 +32,11 @@ class MainWindow(
 }
 
 class MainPanel(
-        bus: EventBus
+        val clientMaster: ClientMasterPanel,
+        val clientList: ClientListPanel
 ) : JPanel(BorderLayout()) {
     init {
-        val clientPanel = ClientMasterPanel(bus)
-
-        val centerPanel = JPanel(BorderLayout())
-        centerPanel.add(clientPanel)
-
-        add(ClientListPanel(bus), BorderLayout.WEST)
-        add(centerPanel, BorderLayout.CENTER)
+        add(clientList, BorderLayout.WEST)
+        add(clientMaster, BorderLayout.CENTER)
     }
 }

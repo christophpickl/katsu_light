@@ -33,19 +33,19 @@ class TreatmentListPanel(bus: EventBus) : JList<Treatment>() {
         }
     }
 
-    @Subscribe
-    fun onClientCreateEvent(event: ClientCreateEvent) {
-        treatmentsModel.clear()
-    }
-
-    @Subscribe
-    fun onClientSelectedEvent(event: ClientSelectedEvent) {
-        treatmentsModel.clear()
-        treatmentsModel.addAll(event.client.treatments)
-        if (event.client.treatments.isNotEmpty()) {
-            selectedIndex = 0
-        }
-    }
+//    @Subscribe
+//    fun onClientCreateEvent(event: ClientCreateEvent) {
+//        treatmentsModel.clear()
+//    }
+//
+//    @Subscribe
+//    fun onClientSelectedEvent(event: ClientSelectedEvent) {
+//        treatmentsModel.clear()
+//        treatmentsModel.addAll(event.client.treatments)
+//        if (event.client.treatments.isNotEmpty()) {
+//            selectedIndex = 0
+//        }
+//    }
 }
 
 private class TreatmentCellRenderer : ListCellRenderer<Treatment> {

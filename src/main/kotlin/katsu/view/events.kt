@@ -3,13 +3,13 @@ package katsu.view
 import katsu.model.Client
 import katsu.model.Treatment
 
-data class ClientsLoadedEvent(val clients: List<Client>)
+class ClientsLoadedEvent
 
 data class ClientSelectedEvent(val client: Client)
 
 class ClientCreateEvent
 
-class ClientSaveEvent(val client: Client)
+class ClientSaveEvent
 
 class ClientSavedEvent(val client: Client, val wasCreated: Boolean)
 

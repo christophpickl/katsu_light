@@ -46,24 +46,24 @@ class TreatmentPanel(bus: EventBus) : JPanel(BorderLayout()) {
         add(detailPanel, BorderLayout.CENTER)
     }
 
-    @Subscribe
-    fun onTreatmentSelectedEvent(event: TreatmentSelectedEvent) {
-        uiInit(event.treatment)
-    }
-
-    @Subscribe
-    fun onClientCreateEvent(event: ClientCreateEvent) {
-        uiReset()
-    }
-
-    @Subscribe
-    fun onClientSelectedEvent(event: ClientSelectedEvent) {
-        if (event.client.treatments.isEmpty()) {
-            uiReset()
-        } else {
-            uiInit(event.client.treatments.first())
-        }
-    }
+//    @Subscribe
+//    fun onTreatmentSelectedEvent(event: TreatmentSelectedEvent) {
+//        uiInit(event.treatment)
+//    }
+//
+//    @Subscribe
+//    fun onClientCreateEvent(event: ClientCreateEvent) {
+//        uiReset()
+//    }
+//
+//    @Subscribe
+//    fun onClientSelectedEvent(event: ClientSelectedEvent) {
+//        if (event.client.treatments.isEmpty()) {
+//            uiReset()
+//        } else {
+//            uiInit(event.client.treatments.first())
+//        }
+//    }
 
     private fun uiInit(treatment: Treatment) {
         currentTreatment = treatment

@@ -19,10 +19,11 @@ import javax.swing.ListCellRenderer
 import javax.swing.ListSelectionModel
 
 class ClientListPanel(
-        private val bus: EventBus
+        bus: EventBus,
+        clientList: ClientList
 ) : JPanel(BorderLayout()) {
     init {
-        add(JScrollPane(ClientList(bus)), BorderLayout.CENTER)
+        add(JScrollPane(clientList), BorderLayout.CENTER)
         val btnCreate = JButton("Create New")
         btnCreate.addActionListener {
             bus.post(ClientCreateEvent())
@@ -32,14 +33,13 @@ class ClientListPanel(
 }
 
 class ClientList(
-        private val bus: EventBus
+        bus: EventBus
 ) : JList<Client>() {
 
     private val log = logger {}
-    private val clientsModel = DefaultListModel<Client>()
+    val clientsModel = DefaultListModel<Client>()
 
     init {
-        bus.register(this)
         model = clientsModel
         cellRenderer = ClientCellRenderer()
         preferredSize = Dimension(200, preferredSize.height)
@@ -47,31 +47,21 @@ class ClientList(
         addListSelectionListener { e ->
             if (!e.valueIsAdjusting && selectedIndex != -1) { // if clearSelection() => index is -1
                 val selectedClient = clientsModel.elementAt(selectedIndex)
-                log.debug { "list changed to: $selectedClient" }
+                log.debug { "List selection changed to: $selectedClient" }
                 bus.post(ClientSelectedEvent(selectedClient))
             }
         }
     }
 
-    @Subscribe
-    fun onClientsLoadedEvent(event: ClientsLoadedEvent) {
-        clientsModel.addAll(event.clients)
-    }
-
-    @Subscribe
-    fun onClientCreateEvent(event: ClientCreateEvent) {
-        clearSelection()
-    }
-
-    @Subscribe
-    fun onClientSavedEvent(event: ClientSavedEvent) {
-        if (event.wasCreated) {
-            clientsModel.add(0, event.client)
-        } else {
-            val clientIndex = clientsModel.findClientIndexFor(event.client.id)
-            clientsModel.setElementAt(event.client, clientIndex)
-        }
-    }
+//    @Subscribe
+//    fun onClientSavedEvent(event: ClientSavedEvent) {
+//        if (event.wasCreated) {
+//            clientsModel.add(0, event.client)
+//        } else {
+//            val clientIndex = clientsModel.findClientIndexFor(event.client.id)
+//            clientsModel.setElementAt(event.client, clientIndex)
+//        }
+//    }
 }
 
 private fun DefaultListModel<Client>.findClientIndexFor(searchId: UUID): Int {

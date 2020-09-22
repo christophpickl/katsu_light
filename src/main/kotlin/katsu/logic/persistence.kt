@@ -18,7 +18,7 @@ class InMemoryDataLoader : DataLoader {
                             id = UUID.fromString("00000000-0000-0000-0000-000000000001"),
                             firstName = "Max",
                             text = "super ruhiger typ",
-                            treatments = listOf(
+                            treatments = arrayListOf(
                                     Treatment(2, LocalDateTime.now().minusDays(1), "fuehlt sich gut"),
                                     Treatment(1, LocalDateTime.now().minusDays(2), "hab ich Bl und Due gemacht"),
                             ),
@@ -27,7 +27,7 @@ class InMemoryDataLoader : DataLoader {
                             id = UUID.fromString("00000000-0000-0000-0000-000000000002"),
                             firstName = "Anna",
                             text = "hektisch; schulterbeschwerde",
-                            treatments = emptyList(),
+                            treatments = arrayListOf(),
                     ),
             ),
     )
