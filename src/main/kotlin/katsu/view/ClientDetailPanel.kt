@@ -1,20 +1,23 @@
 package katsu.view
 
+import katsu.Debug
 import katsu.model.Client
+import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.JLabel
 import javax.swing.JPanel
+import javax.swing.JScrollPane
 import javax.swing.JTextArea
 import javax.swing.JTextField
 
 class ClientDetailPanel : JPanel(GridBagLayout()) {
 
-    var clientId = Client.NO_ID
-    val inpFirstName = JTextField(20)
+    val inpFirstName = JTextField()
     val inpText = JTextArea()
 
     init {
+        if(Debug.bgColors) background = Color.RED
         val c = GridBagConstraints()
         c.gridx = 0
         c.gridy = 0
@@ -25,13 +28,16 @@ class ClientDetailPanel : JPanel(GridBagLayout()) {
 
         c.gridx++
         c.weightx = 1.0
+        c.fill = GridBagConstraints.HORIZONTAL
         add(inpFirstName, c)
 
         c.gridx = 0
+        c.gridy++
         c.weightx = 1.0
         c.weighty = 1.0
-        c.gridy++
-        add(inpText, c)
+        c.gridwidth = 2
+        c.fill = GridBagConstraints.BOTH
+        add(JScrollPane(inpText), c)
     }
 
 //
@@ -41,7 +47,6 @@ class ClientDetailPanel : JPanel(GridBagLayout()) {
 //    }
 
     fun updateUi(client: Client) {
-        clientId = client.id
         inpFirstName.text = client.firstName
         inpText.text = client.text
     }

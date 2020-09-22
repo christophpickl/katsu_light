@@ -25,21 +25,22 @@ class Model(
         currentTreatment: Treatment?
 ) {
 
+    val isCurrentClientUnsaved: Boolean get() = !_clients.contains(currentClient)
+
     val clients: List<Client> get() = _clients
 
     fun addCurrentClient() {
         // TODO calculate proper index based on firstname
-        _clients.add(0, currentClient)
-        bus.post(ClientAddedModelEvent(currentClient))
+        val position = 0
+        _clients.add(position, currentClient)
+        bus.post(ClientAddedModelEvent(currentClient, position))
     }
 
     fun load(clients: List<Client>) {
-        _clients = clients.toMutableList()
+        _clients.addAll(clients)
     }
 
-    private var _clients: MutableList<Client> by Delegates.observable(clients) { _, old, new ->
-        println("clients changed from $old to $new")
-    }
+    private val _clients: MutableList<Client> = clients
 
     var currentClient: Client by Delegates.observable(currentClient) { _, old, new ->
         println("currentClient changed from $old to $new")
@@ -49,12 +50,12 @@ class Model(
     var currentTreatment: Treatment? by Delegates.observable(currentTreatment) { _, old, new ->
         println("currentTreatment changed from $old to $new")
     }
-
 }
 
 data class CurrentClientModelEvent(
         val currentClient: Client
 )
 data class ClientAddedModelEvent(
-        val client: Client
+        val client: Client,
+        val position: Int
 )

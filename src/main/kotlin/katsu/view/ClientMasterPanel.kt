@@ -8,7 +8,7 @@ import javax.swing.JPanel
 
 class ClientMasterPanel(
         bus: EventBus,
-        val clientDetailPanel: ClientDetailPanel
+        clientDetailPanel: ClientDetailPanel
 ) : JPanel(GridBagLayout()) {
 
 //    TODO private val treatmentPanel = TreatmentPanel(bus)
@@ -17,7 +17,7 @@ class ClientMasterPanel(
         val buttonPanel = JPanel()
         val btnSave = JButton("Save")
         btnSave.addActionListener {
-            bus.post(ClientSaveEvent())
+            bus.post(ClientSaveRequestEvent())
         }
         buttonPanel.add(btnSave)
 
@@ -25,11 +25,14 @@ class ClientMasterPanel(
         val c = GridBagConstraints()
         c.gridx = 0
         c.gridy = 0
+
         c.weightx = 1.0
         c.weighty = 0.0
         add(buttonPanel, c)
+
         c.gridy++
-        c.weighty = 0.5
+        c.weighty = 1.0
+        c.fill = GridBagConstraints.BOTH
         add(clientDetailPanel, c)
 //        c.gridy++
 //        c.weighty = 0.5

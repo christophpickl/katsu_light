@@ -9,7 +9,7 @@ data class ClientSelectedEvent(val client: Client)
 
 class ClientCreateEvent
 
-class ClientSaveEvent
+class ClientSaveRequestEvent
 
 class ClientSavedEvent(val client: Client, val wasCreated: Boolean)
 

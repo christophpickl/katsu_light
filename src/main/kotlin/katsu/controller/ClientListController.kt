@@ -3,6 +3,7 @@ package katsu.controller
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import katsu.model.Client
+import katsu.model.ClientAddedModelEvent
 import katsu.model.Model
 import katsu.view.ClientCreateEvent
 import katsu.view.ClientList
@@ -16,6 +17,7 @@ class ClientListController(
         private val clientList: ClientList
 ) {
     private val log = logger {}
+
     init {
         bus.register(this)
     }
@@ -28,11 +30,21 @@ class ClientListController(
 
     @Subscribe
     fun onClientSelectedEvent(@Suppress("unused") event: ClientSelectedEvent) {
+        log.debug { "onClientSelectedEvent" }
         model.currentClient = event.client
     }
 
     @Subscribe
     fun onClientCreateEvent(event: ClientCreateEvent) {
+        log.debug { "onClientCreateEvent" }
         clientList.clearSelection()
     }
+
+    @Subscribe
+    fun onClientAddedModelEvent(event: ClientAddedModelEvent) {
+        log.debug { "onClientAddedModelEvent: $event" }
+        clientList.clientsModel.add(event.position, event.client)
+        clientList.selectionModel.setSelectionInterval(event.position, event.position)
+    }
+
 }

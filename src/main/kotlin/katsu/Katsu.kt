@@ -25,6 +25,10 @@ object Katsu {
     }
 }
 
+object Debug {
+    val bgColors = true
+}
+
 class ApplicationStarter(
         private val mainController: MainController
 ) {

@@ -1,17 +1,11 @@
 package katsu.controller
 
 import com.google.common.eventbus.EventBus
-import com.google.common.eventbus.Subscribe
 import katsu.logic.DataLoader
-import katsu.model.Client
 import katsu.model.Model
-import katsu.view.ClientSaveEvent
-import katsu.view.ClientSavedEvent
 import katsu.view.ClientsLoadedEvent
 import katsu.view.MainWindow
 import mu.KotlinLogging.logger
-import java.util.*
-import javax.swing.JOptionPane
 
 class MainController(
         private val bus: EventBus,

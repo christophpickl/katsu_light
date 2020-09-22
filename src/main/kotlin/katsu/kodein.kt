@@ -1,6 +1,7 @@
 package katsu
 
 import com.google.common.eventbus.EventBus
+import katsu.controller.ClientCrudController
 import katsu.controller.ClientListController
 import katsu.controller.ClientDetailController
 import katsu.controller.MainController
@@ -31,7 +32,7 @@ fun applicationKodein() = Kodein.Module("Application Module") {
     // view
     bind<MainWindow>() with singleton { MainWindow(instance()) }
     bind<MainPanel>() with singleton { MainPanel(instance(), instance()) }
-    bind<ClientMasterPanel>() with singleton { ClientMasterPanel(instance()) }
+    bind<ClientMasterPanel>() with singleton { ClientMasterPanel(instance(), instance()) }
     bind<ClientListPanel>() with singleton { ClientListPanel(instance(), instance()) }
     bind<ClientList>() with singleton { ClientList(instance()) }
     bind<ClientDetailPanel>() with singleton { ClientDetailPanel() }
@@ -40,6 +41,7 @@ fun applicationKodein() = Kodein.Module("Application Module") {
     bind<MainController>() with eagerSingleton { MainController(instance(), instance(), instance(), instance()) }
     bind<ClientListController>() with eagerSingleton { ClientListController(instance(), instance(), instance()) }
     bind<ClientDetailController>() with eagerSingleton { ClientDetailController(instance(), instance(), instance()) }
+    bind<ClientCrudController>() with eagerSingleton { ClientCrudController(instance(), instance(), instance()) }
 
     // app
     bind<ApplicationStarter>() with singleton { ApplicationStarter(instance()) }

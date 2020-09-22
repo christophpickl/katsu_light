@@ -7,48 +7,29 @@ import katsu.model.CurrentClientModelEvent
 import katsu.model.Model
 import katsu.view.ClientCreateEvent
 import katsu.view.ClientDetailPanel
-import katsu.view.ClientSaveEvent
-import javax.swing.JOptionPane
+import mu.KotlinLogging.logger
 
 class ClientDetailController(
         bus: EventBus,
         private val model: Model,
         private val clientDetailPanel: ClientDetailPanel) {
+
+    private val log = logger {}
     init {
         bus.register(this)
     }
 
     @Subscribe
-    fun onCurrentClientChangedEvent(@Suppress("unused") event: CurrentClientModelEvent) {
+    fun onCurrentClientChangedEvent(event: CurrentClientModelEvent) {
+        log.debug { "onCurrentClientChangedEvent: $event" }
         clientDetailPanel.updateUi(model.currentClient)
         clientDetailPanel.inpFirstName.requestFocus()
     }
 
     @Subscribe
     fun onClientCreateEvent(event: ClientCreateEvent) {
+        log.debug { "onClientCreateEvent" }
         model.currentClient = Client.prototype()
     }
 
-    @Subscribe
-    fun onClientSaveEvent(event: ClientSaveEvent) {
-        if (clientDetailPanel.inpFirstName.text.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "First name must not be empty!")
-            return
-        }
-
-        model.currentClient.firstName = clientDetailPanel.inpFirstName.text
-
-        model.addCurrentClient()
-
-//        val client = event.client
-//        val clientToPost = if (client.isUnsaved) {
-//            val client2 = client.copy(id = UUID.randomUUID())
-//            data.add(client2)
-//            client2
-//        } else {
-//            data.update(client)
-//            client
-//        }
-//        bus.post(ClientSavedEvent(clientToPost, wasCreated = client.isUnsaved))
-    }
 }
