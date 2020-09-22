@@ -1,6 +1,7 @@
 object Versions {
     const val assertk = "0.20"
     const val jackson = "2.10.2"
+    const val jacksonDate = "2.11.2"
     const val jvm = "1.8"
     const val joda = "2.10.6"
     const val jsonassert = "1.5.0"

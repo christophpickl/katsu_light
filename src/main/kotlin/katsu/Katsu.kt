@@ -35,5 +35,10 @@ class ApplicationStarter(
 ) {
     fun startUp() {
         mainController.show()
+        Runtime.getRuntime().addShutdownHook(object : Thread() {
+            override fun run() {
+                mainController.persistData()
+            }
+        })
     }
 }

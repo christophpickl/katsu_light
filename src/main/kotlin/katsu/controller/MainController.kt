@@ -1,6 +1,7 @@
 package katsu.controller
 
 import com.google.common.eventbus.EventBus
+import katsu.logic.Data
 import katsu.logic.DataLoader
 import katsu.model.Model
 import katsu.view.ClientsLoadedEvent
@@ -9,9 +10,9 @@ import mu.KotlinLogging.logger
 
 class MainController(
         private val bus: EventBus,
+        private val model: Model,
         private val dataLoader: DataLoader,
-        private val mainWindow: JMainWindow,
-        private val model: Model
+        private val mainWindow: JMainWindow
 ) {
     private val log = logger {}
 
@@ -26,6 +27,12 @@ class MainController(
         bus.post(ClientsLoadedEvent())
 
         mainWindow.prepareAndShow()
+    }
+
+    fun persistData() {
+        dataLoader.save(Data(
+                clients = model.clients
+        ))
     }
 
 }

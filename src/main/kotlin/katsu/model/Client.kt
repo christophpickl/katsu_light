@@ -1,5 +1,6 @@
 package katsu.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.LocalDateTime
 import java.util.*
 
@@ -18,7 +19,7 @@ data class Client(
         )
     }
 
-    val debugString get() = "Client[$firstName, treatments: ${treatments.size}]"
+    @get:JsonIgnore val debugString get() = "Client[$firstName, treatments: ${treatments.size}]"
 
     fun nextTreatment() = Treatment.prototype().copy(
             number = treatments.size + 1

@@ -1,6 +1,7 @@
 package katsu
 
 import com.google.common.eventbus.EventBus
+import katsu.Env.*
 import katsu.controller.ClientCrudController
 import katsu.controller.ClientListController
 import katsu.controller.ClientDetailController
@@ -9,7 +10,7 @@ import katsu.controller.TreatmentCrudController
 import katsu.controller.TreatmentDetailController
 import katsu.controller.TreatmentListController
 import katsu.logic.DataLoader
-import katsu.logic.InMemoryDataLoader
+import katsu.logic.JsonDataLoader
 import katsu.model.Client
 import katsu.model.Model
 import katsu.model.Treatment
@@ -22,18 +23,31 @@ import katsu.view.JMainWindow
 import katsu.view.JTreatmentDetail
 import katsu.view.JTreatmentList
 import katsu.view.JTreatmentMaster
+import mu.KotlinLogging
+import mu.KotlinLogging.logger
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.eagerSingleton
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
+import java.io.File
+import java.lang.IllegalArgumentException
+
+private val log = logger {}
 
 fun applicationKodein() = Kodein.Module("Application Module") {
+    val env = Env.readFromSystemProperties()
+    log.info { "Environment: $env" }
+
     // generic
     bind<EventBus>() with singleton { EventBus() }
 
     // logic
-    bind<DataLoader>() with singleton { InMemoryDataLoader() }
+//    bind<DataLoader>() with singleton { InMemoryDataLoader() }
+    bind<DataLoader>() with singleton { JsonDataLoader(
+            targetFile = File(env.appDirectory, "data.json")
+    ) }
+
     bind<Model>() with singleton { Model(instance(), arrayListOf(), Client.prototype(), Treatment.prototype()) }
 
     // view

@@ -18,7 +18,8 @@ application {
 
 dependencies {
     implementation("org.kodein.di:kodein-di-generic-jvm:${Versions.kodein}")
-//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jackson}")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jackson}")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${Versions.jacksonDate}")
     implementation("io.github.microutils:kotlin-logging:${Versions.klogging}")
     implementation("ch.qos.logback:logback-classic:${Versions.logback}")
 //    implementation("joda-time:joda-time:${Versions.joda}")
