@@ -1,8 +1,6 @@
 package katsu.view
 
-import katsu.Debug
 import katsu.model.Client
-import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.JLabel
@@ -17,7 +15,6 @@ class JClientDetail : JPanel(GridBagLayout()) {
     val inpText = JTextArea()
 
     init {
-        if(Debug.bgColors) background = Color.RED
         val c = GridBagConstraints()
         c.gridx = 0
         c.gridy = 0

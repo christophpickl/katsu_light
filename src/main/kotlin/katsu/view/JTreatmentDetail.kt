@@ -1,7 +1,5 @@
 package katsu.view
 
-import katsu.Debug
-import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.JLabel
@@ -17,7 +15,6 @@ class JTreatmentDetail() : JPanel(GridBagLayout()) {
 
     init {
         JPanel(GridBagLayout())
-        if(Debug.bgColors) background = Color.YELLOW
         val c = GridBagConstraints()
 
         c.gridx = 0

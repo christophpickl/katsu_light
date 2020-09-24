@@ -1,5 +1,20 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+object Konfig {
+    const val appTitle = "Katsu"
+    const val mainClass = "katsu.Katsu"
+    const val version = "1.0"
+
+    private val isBuildProd = System.getProperty("katsu.buildProd") != null
+    val env = if (isBuildProd) {
+        "prod"
+    } else "dev"
+    val archiveClassifier = if (isBuildProd) {
+        ""
+    } else "SNAPSHOT"
+}
 
 repositories {
     mavenCentral()
@@ -8,12 +23,13 @@ repositories {
 }
 
 plugins {
+    id("com.github.johnrengelman.shadow") version "6.0.0"
     kotlin("jvm") version "1.4.10"
     application
 }
 
 application {
-    mainClassName = "katsu.Katsu"
+    mainClassName = Konfig.mainClass
 }
 
 dependencies {
@@ -33,6 +49,7 @@ dependencies {
     // testImplementation("com.github.tomakehurst:wiremock-jre8:${Versions.wiremock}")
 }
 
+
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
@@ -46,6 +63,22 @@ tasks {
             attributes(mapOf("Main-Class" to application.mainClassName))
         }
         from(configurations["compile"].map { if (it.isDirectory) it else zipTree(it) })
+    }
+    withType<ProcessResources> {
+        filesMatching("katsu/meta-info.properties") {
+            expand(mapOf(
+                    "version" to Konfig.version,
+                    "env" to Konfig.env
+            ))
+        }
+    }
+    named<ShadowJar>("shadowJar") {
+        archiveBaseName.set(Konfig.appTitle)
+        archiveVersion.set(Konfig.version)
+        archiveClassifier.set(Konfig.archiveClassifier)
+        manifest {
+            attributes(mapOf("Main-Class" to Konfig.mainClass))
+        }
     }
 
     withType<Test> {

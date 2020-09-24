@@ -1,9 +1,9 @@
 package katsu.logic
 
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import mu.KotlinLogging
 import mu.KotlinLogging.logger
 import java.io.File
 
@@ -15,6 +15,7 @@ class JsonDataLoader(
     private val currentVersion = 1
     private val jackson = jacksonObjectMapper().apply {
         registerModule(JavaTimeModule())
+        disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     }
 
     override fun load(): Data {

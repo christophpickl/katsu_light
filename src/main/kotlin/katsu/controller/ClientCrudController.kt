@@ -3,8 +3,8 @@ package katsu.controller
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import katsu.model.Model
-import katsu.view.JClientDetail
 import katsu.view.ClientSaveRequestUIEvent
+import katsu.view.JClientDetail
 import mu.KotlinLogging.logger
 import javax.swing.JOptionPane
 
@@ -22,7 +22,7 @@ class ClientCrudController(
     }
 
     @Subscribe
-    fun onClientSaveRequestEvent(event: ClientSaveRequestUIEvent) {
+    fun onClientSaveRequestEvent(@Suppress("UNUSED_PARAMETER") event: ClientSaveRequestUIEvent) {
         log.debug { "onClientSaveRequestEvent" }
         if (clientDetail.inpFirstName.text.isEmpty()) {
             JOptionPane.showMessageDialog(null, "First name must not be empty!")

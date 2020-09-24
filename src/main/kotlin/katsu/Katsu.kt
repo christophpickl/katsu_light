@@ -1,14 +1,9 @@
 package katsu
 
 import katsu.controller.MainController
-import katsu.logic.DataLoader
-import katsu.logic.InMemoryDataLoader
-import mu.KotlinLogging
 import mu.KotlinLogging.logger
 import org.kodein.di.Kodein
-import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
-import org.kodein.di.generic.singleton
 
 object Katsu {
 
@@ -16,18 +11,25 @@ object Katsu {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        log.info { "Katsu starting up ..." }
+        log.info { "KATSU main ..." }
+        val env = Env.loadCurrent()
+//        var msg = "Manifests:\n"
+//        Katsu::class.java.classLoader.getResources("META-INF/MANIFEST.MF").asIterator().forEach { url ->
+//            url.openStream().use { stream ->
+//                val manifest = Manifest(stream)
+//                msg += "XXX: ${manifest.entries}\n"
+//            }
+//        }
+//        JOptionPane.showMessageDialog(null, msg)
+        log.info { "Starting kodein with environment: $env" }
+        log.info { "==============================================" }
         val kodein = Kodein {
-            import(applicationKodein())
+            import(applicationKodein(env))
         }
         val starter by kodein.instance<ApplicationStarter>()
+        log.debug { "Starting application" }
         starter.startUp()
     }
-}
-
-object Debug {
-//    const val bgColors = false
-    const val bgColors = true
 }
 
 class ApplicationStarter(

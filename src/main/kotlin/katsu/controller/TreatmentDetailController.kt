@@ -22,7 +22,7 @@ class TreatmentDetailController(
     }
 
     @Subscribe
-    fun onClientCreateRequestUIEvent(event: ClientCreateRequestUIEvent) {
+    fun onClientCreateRequestUIEvent(@Suppress("UNUSED_PARAMETER") event: ClientCreateRequestUIEvent) {
         model.currentTreatment = Treatment.prototype()
     }
 

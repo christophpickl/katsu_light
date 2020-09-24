@@ -1,11 +1,10 @@
 package katsu.view
 
 import com.google.common.eventbus.EventBus
-import katsu.Debug
-import java.awt.Color
 import java.awt.FlowLayout
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
+import javax.swing.BorderFactory
 import javax.swing.JPanel
 import javax.swing.JSplitPane
 
@@ -18,7 +17,6 @@ class JClientMaster(
 
     init {
         val buttonPanel = JPanel(FlowLayout(FlowLayout.LEFT))
-        if(Debug.bgColors) buttonPanel.background = Color.PINK
 
         buttonPanel.addButton("Save Client") {
             bus.post(ClientSaveRequestUIEvent())
@@ -37,6 +35,7 @@ class JClientMaster(
         add(buttonPanel, c)
 
         val splitPane = JSplitPane(JSplitPane.VERTICAL_SPLIT, clientDetail, treatments).apply {
+            border = BorderFactory.createEmptyBorder()
             isOneTouchExpandable = true
 //            dividerLocation = 150
             resizeWeight = 0.8

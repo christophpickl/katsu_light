@@ -2,7 +2,7 @@ package katsu.logic
 
 import katsu.model.Client
 import katsu.model.Treatment
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.util.*
 
 class InMemoryDataLoader : DataLoader {
@@ -13,8 +13,8 @@ class InMemoryDataLoader : DataLoader {
                             firstName = "Max",
                             text = "super ruhiger typ",
                             treatments = arrayListOf(
-                                    Treatment(2, LocalDateTime.now().minusDays(1), "fuehlt sich gut"),
-                                    Treatment(1, LocalDateTime.now().minusDays(2), "hab ich Bl und Due gemacht"),
+                                    Treatment(2, LocalDate.now().minusDays(1), "fuehlt sich gut"),
+                                    Treatment(1, LocalDate.now().minusDays(2), "hab ich Bl und Due gemacht"),
                             ),
                     ),
                     Client(

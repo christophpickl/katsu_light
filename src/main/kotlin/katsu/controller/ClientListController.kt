@@ -22,7 +22,7 @@ class ClientListController(
     }
 
     @Subscribe
-    fun onClientsLoadedEvent(@Suppress("unused") event: ClientsLoadedEvent) {
+    fun onClientsLoadedEvent(@Suppress("UNUSED_PARAMETER") event: ClientsLoadedEvent) {
         log.debug { "onClientsLoadedEvent: ${model.clients}" }
         clientList.clientsModel.addAll(model.clients)
     }
@@ -34,7 +34,7 @@ class ClientListController(
     }
 
     @Subscribe
-    fun onClientCreateEvent(event: ClientCreateRequestUIEvent) {
+    fun onClientCreateEvent(@Suppress("UNUSED_PARAMETER") event: ClientCreateRequestUIEvent) {
         log.debug { "onClientCreateEvent" }
         clientList.clearSelection()
     }

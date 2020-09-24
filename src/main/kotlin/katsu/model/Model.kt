@@ -1,24 +1,8 @@
 package katsu.model
 
 import com.google.common.eventbus.EventBus
-import mu.KotlinLogging
 import mu.KotlinLogging.logger
 import kotlin.properties.Delegates
-
-//data class Model(
-//     val clients: MutableList<Client>,
-//     var currentClient: Client?,
-//     var currentTreatment: Treatment?
-//) {
-//
-//    private val log = logger {}
-//
-//    fun reset(newClients: MutableList<Client>) {
-//        log.debug { "reset($newClients)" }
-//        clients.clear()
-//        clients.addAll(newClients)
-//    }
-//}
 
 class Model(
         private val bus: EventBus,

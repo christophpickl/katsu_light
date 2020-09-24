@@ -1,8 +1,6 @@
 package katsu.view
 
 import com.google.common.eventbus.EventBus
-import katsu.Debug
-import java.awt.Color
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.JButton
@@ -17,7 +15,6 @@ class JTreatmentMaster(
 
     init {
         bus.register(this)
-        if (Debug.bgColors) background = Color.BLUE
 
         val c = GridBagConstraints()
         c.gridx = 0

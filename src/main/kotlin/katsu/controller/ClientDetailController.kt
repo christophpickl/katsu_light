@@ -27,7 +27,7 @@ class ClientDetailController(
     }
 
     @Subscribe
-    fun onClientCreateEvent(event: ClientCreateRequestUIEvent) {
+    fun onClientCreateEvent(@Suppress("UNUSED_PARAMETER") event: ClientCreateRequestUIEvent) {
         log.debug { "onClientCreateEvent" }
         model.currentClient = Client.prototype()
     }

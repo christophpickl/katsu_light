@@ -1,10 +1,11 @@
 package katsu
 
 import com.google.common.eventbus.EventBus
-import katsu.Env.*
+import katsu.Env.Dev
+import katsu.Env.Prod
 import katsu.controller.ClientCrudController
-import katsu.controller.ClientListController
 import katsu.controller.ClientDetailController
+import katsu.controller.ClientListController
 import katsu.controller.MainController
 import katsu.controller.TreatmentCrudController
 import katsu.controller.TreatmentDetailController
@@ -14,8 +15,8 @@ import katsu.logic.JsonDataLoader
 import katsu.model.Client
 import katsu.model.Model
 import katsu.model.Treatment
-import katsu.view.JClientDetail
 import katsu.view.ClientList
+import katsu.view.JClientDetail
 import katsu.view.JClientList
 import katsu.view.JClientMaster
 import katsu.view.JMainPanel
@@ -23,7 +24,6 @@ import katsu.view.JMainWindow
 import katsu.view.JTreatmentDetail
 import katsu.view.JTreatmentList
 import katsu.view.JTreatmentMaster
-import mu.KotlinLogging
 import mu.KotlinLogging.logger
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -31,27 +31,32 @@ import org.kodein.di.generic.eagerSingleton
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 import java.io.File
-import java.lang.IllegalArgumentException
 
+private val Env.windowTitle
+    get() = when (this) {
+        Dev -> "Katsu DEV"
+        Prod -> "Katsu PROD"
+    }
 private val log = logger {}
 
-fun applicationKodein() = Kodein.Module("Application Module") {
-    val env = Env.readFromSystemProperties()
-    log.info { "Environment: $env" }
+fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
+
 
     // generic
     bind<EventBus>() with singleton { EventBus() }
 
     // logic
 //    bind<DataLoader>() with singleton { InMemoryDataLoader() }
-    bind<DataLoader>() with singleton { JsonDataLoader(
-            targetFile = File(env.appDirectory, "data.json")
-    ) }
+    bind<DataLoader>() with singleton {
+        JsonDataLoader(
+                targetFile = File(env.appDirectory, "data.json")
+        )
+    }
 
     bind<Model>() with singleton { Model(instance(), arrayListOf(), Client.prototype(), Treatment.prototype()) }
 
     // view
-    bind<JMainWindow>() with singleton { JMainWindow(instance()) }
+    bind<JMainWindow>() with singleton { JMainWindow(env.windowTitle, instance()) }
     bind<JMainPanel>() with singleton { JMainPanel(instance(), instance()) }
     bind<JClientMaster>() with singleton { JClientMaster(instance(), instance(), instance()) }
     bind<JClientList>() with singleton { JClientList(instance()) }
