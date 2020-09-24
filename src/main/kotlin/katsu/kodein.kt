@@ -37,6 +37,7 @@ private val Env.windowTitle
         Dev -> "Katsu DEV"
         Prod -> "Katsu PROD"
     }
+
 private val log = logger {}
 
 fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
@@ -56,7 +57,7 @@ fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
     bind<Model>() with singleton { Model(instance(), arrayListOf(), Client.prototype(), Treatment.prototype()) }
 
     // view
-    bind<JMainWindow>() with singleton { JMainWindow(env.windowTitle, instance()) }
+    bind<JMainWindow>() with singleton { JMainWindow("${env.windowTitle} - v${MetaInfo.properties.appVersion}", instance()) }
     bind<JMainPanel>() with singleton { JMainPanel(instance(), instance()) }
     bind<JClientMaster>() with singleton { JClientMaster(instance(), instance(), instance()) }
     bind<JClientList>() with singleton { JClientList(instance()) }

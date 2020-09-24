@@ -5,16 +5,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 object Konfig {
     const val appTitle = "Katsu"
     const val mainClass = "katsu.Katsu"
-    const val version = "1.0"
+    val version = File("version.properties").readText().substringAfter("=").trim()
 
     private val isBuildProd = System.getProperty("katsu.buildProd") != null
-    val env = if (isBuildProd) {
-        "prod"
-    } else "dev"
-    val archiveClassifier = if (isBuildProd) {
-        ""
-    } else "SNAPSHOT"
+    val env = if (isBuildProd) "PROD" else "DEV"
+    val archiveClassifier = if (isBuildProd) "" else "SNAPSHOT"
 }
+println("Build v${Konfig.version} for ${Konfig.env}-environment")
 
 repositories {
     mavenCentral()
