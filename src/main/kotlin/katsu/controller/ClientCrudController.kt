@@ -30,7 +30,7 @@ class ClientCrudController(
         }
 
         model.currentClient.firstName = clientDetail.inpFirstName.text
-        model.currentClient.text = clientDetail.inpText.text
+        model.currentClient.note = clientDetail.inpText.text
 
         treatmentCrud.updateModel()
 

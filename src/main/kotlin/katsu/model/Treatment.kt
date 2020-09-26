@@ -7,9 +7,6 @@ data class Treatment(
         var date: LocalDate,
         var note: String
 ) : Comparable<Treatment> {
-    override fun compareTo(other: Treatment) = other.number - number
-
-    val isPrototype = number == -1
 
     companion object {
         fun prototype() = Treatment(
@@ -18,4 +15,8 @@ data class Treatment(
                 note = ""
         )
     }
+
+    val isPrototype = number == -1
+
+    override fun compareTo(other: Treatment) = other.number - number
 }

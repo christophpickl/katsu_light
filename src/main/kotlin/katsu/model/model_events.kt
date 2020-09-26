@@ -1,6 +1,5 @@
 package katsu.model
 
-
 data class CurrentClientModelEvent(
         val currentClient: Client
 )

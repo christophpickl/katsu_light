@@ -45,6 +45,6 @@ class JClientDetail : JPanel(GridBagLayout()) {
 
     fun updateUi(client: Client) {
         inpFirstName.text = client.firstName
-        inpText.text = client.text
+        inpText.text = client.note
     }
 }

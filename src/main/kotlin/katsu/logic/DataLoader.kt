@@ -9,4 +9,6 @@ interface DataLoader {
 
 data class Data(
         val clients: List<Client>
-)
+) {
+    companion object
+}

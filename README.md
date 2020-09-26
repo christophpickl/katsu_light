@@ -4,12 +4,11 @@ A shiatsu management desktop application.
 
 # Todo
 
-
 ## Iteration 2
 
 * ~~packaging of app (JAR is good enough)~~
 * ~~DEV/PROD mode (different save location)~~
-* data version migrator
+* ~~data migrator~~
 * pictures
 
 ## Iteration 1
@@ -21,14 +20,28 @@ A shiatsu management desktop application.
 
 ## Iteration 3
 
-* new property client.flags (tantsu, donations, like-A, like-C)
+* treatment counter/days ago
+* new property client: birthday, flags (tantsu, donations, like-A, like-C)
 * store preferences in JSON data (window size/position, recent folders, ...)
+
+## Iteration X
+
+* searching/filtering/sorting of client list
+* auto backup on startup (keep x recent backups)
+* versions gradle plugin
+
+## Iteration Y
+
+* more TCM like stuff (elements, colors, meridians, indications from prefilled list)
+* rich text editor
+* google calendar integration
+* gmail integration
 
 ## Iteration Z
 
-* sorting of client list
-* versions gradle plugin
-* auto backup
+* doodle integration / custom solution
+* human body indicating issues
+
 
 # Notes
 

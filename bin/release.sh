@@ -4,11 +4,12 @@ VERSION_PROPERTIES_FILE=version.properties
 
 version="N/A"
 source ${VERSION_PROPERTIES_FILE}
-
 CURRENT_MAJOR_VERSION=$(echo ${version}| cut -d "." -f 1)
 CURRENT_MINOR_VERSION=$(echo ${version}| cut -d "." -f 2)
 NEXT_MINOR_VERSION=$((CURRENT_MINOR_VERSION + 1))
 nextVersion="${CURRENT_MAJOR_VERSION}.${NEXT_MINOR_VERSION}"
+
+JAR_NAME="Katsu-${nextVersion}.jar"
 
 checkLastCommand() {
     if [ $? -ne 0 ] ; then
@@ -40,8 +41,7 @@ checkLastCommand
 
 ./gradlew shadowJar -Dkatsu.buildProd=true
 checkLastCommand
-mv build/libs/Katsu-${nextVersion}.jar /Applications/Katsu/
 
-cp build/libs/Katsu-1.1.jar /Applications
+cp build/libs/"${JAR_NAME}" /Applications
 rm /Applications/Katsu.jar
-ln -s /Applications/Katsu-1.1.jar /Applications/Katsu.jar
+ln /Applications/"${JAR_NAME}" /Applications/Katsu.jar

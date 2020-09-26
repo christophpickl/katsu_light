@@ -1,59 +1,116 @@
 package katsu.logic
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import katsu.model.Client
+import katsu.model.Treatment
 import mu.KotlinLogging.logger
 import java.io.File
+import java.time.LocalDate
+import java.util.*
+
 
 class JsonDataLoader(
         private val targetFile: File
 ) : DataLoader {
 
+
     private val log = logger {}
-    private val currentVersion = 1
     private val jackson = jacksonObjectMapper().apply {
         registerModule(JavaTimeModule())
         disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     }
 
     override fun load(): Data {
-        if(!targetFile.exists()) {
+        if (!targetFile.exists()) {
             log.info { "No data file existing (at ${targetFile.absolutePath}), starting from scratch." }
-            return Data(
-                    clients = emptyList()
-            )
+            return Data(clients = emptyList())
         }
-
         log.info { "Loading data JSON from: ${targetFile.absolutePath}" }
         val jsonTxt = targetFile.readText()
-        val fileVersion = jackson.readTree(jsonTxt)["version"].intValue()
-        if (fileVersion == currentVersion) {
-            return jackson.readValue<JsonVersionedData>(jsonTxt).data
+        val jsonTree = jackson.readTree(jsonTxt)
+        val fileVersion = jsonTree["version"].intValue()
+        if (fileVersion == Migrator.currentVersion) {
+            log.debug { "Most current data v$fileVersion stored, no migration needed." }
+            return jackson.readData(jsonTxt)
         }
+        migrate(fileVersion, jsonTree)
+        return jackson.readData(targetFile.readText())
+    }
 
-        log.info { "Migrating from v${fileVersion} to v${currentVersion} ..." }
-        // FIXME migrate
-
-        return jackson.readValue<JsonVersionedData>(targetFile.readText()).data
+    private fun migrate(fileVersion: Int, jsonTree: JsonNode) {
+        log.info { "Migrating from v${fileVersion} to v${Migrator.currentVersion} ..." }
+        Migrator.migrate(fileVersion, Migrator.currentVersion, jsonTree as ObjectNode)
+        targetFile.writeText(jsonTree.toString())
     }
 
     override fun save(data: Data) {
         log.info { "Saving data JSON to: ${targetFile.absolutePath}" }
-        if(!targetFile.parentFile.exists()) {
+        if (!targetFile.parentFile.exists()) {
             log.debug { "Creating directory at: ${targetFile.parentFile.absolutePath}" }
             targetFile.parentFile.mkdirs()
         }
         targetFile.writeText(jackson.writeValueAsString(JsonVersionedData(
-                version = currentVersion,
-                data = data
+                version = Migrator.currentVersion,
+                clients = data.clients.map { it.toClientJson() }
         )))
     }
-
 }
 
-data class JsonVersionedData(
-        val version: Int,
-        val data: Data
+private fun ObjectMapper.readData(json: String) = readValue<JsonVersionedData>(json).toData()
+
+private fun Client.toClientJson() = ClientJson(
+        id = id.toString(),
+        firstName = firstName,
+        pictureEncoded = null,
+        note = note,
+        treatments = treatments.map { it.toTreatmentJson() }.toMutableList(),
 )
+
+private fun Treatment.toTreatmentJson() = TreatmentJson(
+        number = number,
+        date = date,
+        note = note,
+)
+
+private data class JsonVersionedData(
+        val version: Int,
+        val clients: List<ClientJson>,
+) {
+    fun toData() = Data(
+            clients = clients.map { it.toClient() }
+    )
+}
+
+private data class ClientJson(
+        val id: String,
+        val firstName: String,
+        val pictureEncoded: String?,
+        val note: String,
+        val treatments: MutableList<TreatmentJson>,
+) {
+    fun toClient() = Client(
+            id = UUID.fromString(id),
+            firstName = firstName,
+            picture = null, // TODO picture
+            note = note,
+            treatments = treatments.map { it.toTreatment() }.toMutableList()
+    )
+}
+
+private data class TreatmentJson(
+        val number: Int,
+        val date: LocalDate,
+        val note: String,
+) {
+    fun toTreatment() = Treatment(
+            number = number,
+            date = date,
+            note = note,
+    )
+}

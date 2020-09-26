@@ -21,7 +21,7 @@ class MainController(
     }
 
     fun show() {
-        log.info { "show()" }
+        log.debug { "show()" }
         val clients = dataLoader.load().clients
         model.load(clients)
         bus.post(ClientsLoadedEvent())

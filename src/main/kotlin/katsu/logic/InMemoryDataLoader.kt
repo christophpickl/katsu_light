@@ -11,7 +11,7 @@ class InMemoryDataLoader : DataLoader {
                     Client(
                             id = UUID.fromString("00000000-0000-0000-0000-000000000001"),
                             firstName = "Max",
-                            text = "super ruhiger typ",
+                            note = "super ruhiger typ",
                             treatments = arrayListOf(
                                     Treatment(2, LocalDate.now().minusDays(1), "fuehlt sich gut"),
                                     Treatment(1, LocalDate.now().minusDays(2), "hab ich Bl und Due gemacht"),
@@ -20,7 +20,7 @@ class InMemoryDataLoader : DataLoader {
                     Client(
                             id = UUID.fromString("00000000-0000-0000-0000-000000000002"),
                             firstName = "Anna",
-                            text = "hektisch; schulterbeschwerde",
+                            note = "hektisch; schulterbeschwerde",
                             treatments = arrayListOf(),
                     ),
             ),
