@@ -17,7 +17,9 @@ import javax.swing.BorderFactory
 import javax.swing.DefaultListModel
 import javax.swing.JLabel
 import javax.swing.JList
+import javax.swing.JMenuItem
 import javax.swing.JPanel
+import javax.swing.JPopupMenu
 import javax.swing.ListCellRenderer
 import javax.swing.ListSelectionModel
 import javax.swing.UIManager
@@ -44,7 +46,15 @@ class JClientList(
 
         addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
-                if (e.clickCount == 2) {
+                if (e.clickCount == 1 && e.button == MouseEvent.BUTTON3) {
+                    val popup = JPopupMenu()
+                    popup.add(JMenuItem("Delete ...").apply {
+                        addActionListener {
+                            bus.post(DeleteClientRequestUiEvent())
+                        }
+                    })
+                    popup.show(this@JClientList, e.x, e.y)
+                } else if (e.clickCount == 2 && e.button == MouseEvent.BUTTON1) {
                     bus.post(ChangePictureRequestUIEvent())
                 }
             }

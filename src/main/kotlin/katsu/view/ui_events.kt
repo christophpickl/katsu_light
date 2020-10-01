@@ -18,3 +18,5 @@ class TreatmentNewUIEvent
 class ClosingUIEvent
 
 class ChangePictureRequestUIEvent
+
+class DeleteClientRequestUiEvent

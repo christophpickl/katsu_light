@@ -55,14 +55,6 @@ class ClientListController(
         val currentDirectory = FileSystemView.getFileSystemView().homeDirectory//File(System.getProperty("user.home"))
         val chooser = JFileChooser(currentDirectory)
         chooser.dialogTitle = "Select client picture"
-//        chooser.fileSelectionMode = JFileChooser.FILES_ONLY
-//        chooser.fileFilter = object : FileFilter() {
-//            override fun accept(file: File): Boolean {
-//                if(file.isDirectory) return true
-//                return file.isPng
-//            }
-//            override fun getDescription() = "PNGs only"
-//        }
         chooser.fileFilter = FileNameExtensionFilter("Images (*.png)", "png")
         if (chooser.showDialog(null, "Load") == JFileChooser.APPROVE_OPTION) {
             val selectedFile = chooser.selectedFile
@@ -72,6 +64,12 @@ class ClientListController(
             }
             pictureService.savePicture(model.currentClient, selectedFile)
         }
+    }
+
+    @Subscribe
+    fun onClientDeletedEvent(event: ClientDeletedEvent) {
+        log.trace { "on $event" }
+        clientList.clientsModel.removeElement(event.client)
     }
 }
 

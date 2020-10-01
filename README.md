@@ -12,7 +12,7 @@ A shiatsu management desktop application.
 * ~~packaging of app (JAR is good enough)~~
 * ~~DEV/PROD mode (different save location)~~
 * ~~data migrator~~
-* pictures
+* ~~pictures~~
 
 ### Iteration 3
 

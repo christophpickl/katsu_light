@@ -65,7 +65,7 @@ fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
     bind<MainController>() with eagerSingleton { MainController(instance(), instance(), instance(), instance()) }
     bind<ClientListController>() with eagerSingleton { ClientListController(instance(), instance(), instance(), instance()) }
     bind<ClientDetailController>() with eagerSingleton { ClientDetailController(instance(), instance(), instance()) }
-    bind<ClientCrudController>() with eagerSingleton { ClientCrudController(instance(), instance(), instance(), instance()) }
+    bind<ClientCrudController>() with eagerSingleton { ClientCrudController(instance(), instance(), instance(), instance(), instance()) }
 
     bind<TreatmentListController>() with eagerSingleton { TreatmentListController(instance(), instance(), instance(), instance()) }
     bind<TreatmentDetailController>() with eagerSingleton { TreatmentDetailController(instance(), instance(), instance()) }

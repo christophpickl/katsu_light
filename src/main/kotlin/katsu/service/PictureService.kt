@@ -30,6 +30,13 @@ class PictureService(
         return Picture.ImageIconPicture(ImageIcon(ImageIO.read(target)))
     }
 
+    fun delete(client: Client) {
+        val target = client.targetFile
+        if (target.exists()) {
+            if (!target.delete()) error("Unable to delete picture: ${target.absolutePath}!")
+        }
+    }
+
     private fun saveToFile(client: Client, imageIcon: ImageIcon) {
         ensureBaseFolderExists()
         val bufferedImage = imageIcon.toBufferedImage()
@@ -39,7 +46,7 @@ class PictureService(
 
     private fun ensureBaseFolderExists() {
         if (baseFolder.exists()) return
-        if (!baseFolder.mkdirs()) error("Base folder could not be created at: \${baseFolder.absolutePath}")
+        if (!baseFolder.mkdirs()) error("Base folder could not be created at: ${baseFolder.absolutePath}")
     }
 
     private val Client.targetFile get() = File(baseFolder, "$id.png")

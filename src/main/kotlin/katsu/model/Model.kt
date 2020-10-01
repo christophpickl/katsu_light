@@ -12,6 +12,7 @@ class Model(
 ) {
 
     private val log = logger {}
+    private val _clients: MutableList<Client> = clients
     val isCurrentClientUnsaved: Boolean get() = !_clients.contains(currentClient)
 
     val clients: List<Client> get() = _clients
@@ -27,7 +28,9 @@ class Model(
         _clients.addAll(clients)
     }
 
-    private val _clients: MutableList<Client> = clients
+    fun delete(client: Client) {
+        if (!_clients.remove(client)) error("Client not existing in model: $client!")
+    }
 
     var currentClient: Client by Delegates.observable(currentClient) { _, old, new ->
         log.info { "currentClient changed from $old to $new" }
