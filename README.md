@@ -17,7 +17,7 @@ A shiatsu management desktop application.
 ### Iteration 3
 
 * gadsu importer
-* new property client: active, birthday, flags (tantsu, donations, like-A, like-C)
+* new property client: active, birthday, ~~ABC~~
 * treatment counter/days ago
 * store preferences in JSON data (window size/position, recent folders, ...)
 
@@ -28,6 +28,7 @@ A shiatsu management desktop application.
 * searching/filtering/sorting of client list
 * auto backup on startup (keep x recent backups)
 * versions gradle plugin
+* more client properties: donations, tantsu
 
 ### Iteration Y
 

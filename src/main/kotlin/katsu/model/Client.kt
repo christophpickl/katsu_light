@@ -51,9 +51,9 @@ enum class ClientCategory(
         val jsonValue: String,
         val image: ClientCategoryImage,
 ) {
-    High("High", "high", ClientCategoryImage.Set(Images.load("clientcategory_high.png"))),
-    Normal("Normal", "normal", ClientCategoryImage.Unset),
-    Low("Low", "low", ClientCategoryImage.Set(Images.load("clientcategory_low.png"))),
+    High("High", "high", ClientCategoryImage.Defined(Images.load("clientcategory_high.png"))),
+    Normal("Normal", "normal", ClientCategoryImage.None),
+    Low("Low", "low", ClientCategoryImage.Defined(Images.load("clientcategory_low.png"))),
     ;
 
     companion object {
@@ -63,6 +63,6 @@ enum class ClientCategory(
 }
 
 sealed class ClientCategoryImage {
-    object Unset : ClientCategoryImage()
-    class Set(val imageIcon: ImageIcon) : ClientCategoryImage()
+    object None : ClientCategoryImage()
+    class Defined(val imageIcon: ImageIcon) : ClientCategoryImage()
 }
