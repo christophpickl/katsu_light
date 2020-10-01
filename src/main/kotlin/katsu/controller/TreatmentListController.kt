@@ -24,13 +24,13 @@ class TreatmentListController(
 
     @Subscribe
     fun onClientCreateEvent(event: ClientCreateRequestUIEvent) {
-        log.debug { "on $event" }
+        log.trace { "on $event" }
         treatmentList.treatmentsModel.clear()
     }
 
     @Subscribe
     fun onTreatmentNewUIEvent(event: TreatmentNewUIEvent) {
-        log.debug { "on $event" }
+        log.trace { "on $event" }
         val nextTreatment = model.currentClient.nextTreatment()
         treatmentList.treatmentsModel.add(0, nextTreatment)
         model.currentClient.treatments.add(0, nextTreatment)
@@ -39,7 +39,7 @@ class TreatmentListController(
 
     @Subscribe
     fun onCurrentClientModelEvent(event: CurrentClientModelEvent) {
-        log.debug { "on $event" }
+        log.trace { "on $event" }
         val treatments = event.currentClient.treatments
 
         treatmentList.treatmentsModel.clear()
@@ -48,13 +48,13 @@ class TreatmentListController(
 
     @Subscribe
     fun onTreatmentSelectedUIEvent(event: TreatmentSelectedUIEvent) {
-        log.debug { "on $event" }
+        log.trace { "on $event" }
         model.currentTreatment = event.treatment
     }
 
     @Subscribe
     fun onCurrentTreatmentModelEvent(event: CurrentTreatmentModelEvent) {
-        log.debug { "on $event" }
+        log.trace { "on $event" }
         val positionInList = treatmentList.treatmentsModel.indexOf(event.currentTreatment)
         log.debug { "Position in list for new current treatment: $positionInList" }
         if (positionInList != -1) {

@@ -1,7 +1,10 @@
 package katsu.view
 
+import com.google.common.eventbus.EventBus
 import java.awt.BorderLayout
 import java.awt.Dimension
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
 import javax.swing.BorderFactory
 import javax.swing.JFrame
 import javax.swing.JPanel
@@ -9,13 +12,24 @@ import javax.swing.WindowConstants
 
 class JMainWindow(
         title: String,
+        bus: EventBus,
         mainPanel: JMainPanel,
+        menuBar: KatsuMenuBar
 ) : JFrame() {
 
     init {
         super.setTitle(title)
-        defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
+        defaultCloseOperation = WindowConstants.DO_NOTHING_ON_CLOSE
         contentPane.add(mainPanel)
+        jMenuBar = menuBar
+
+        addWindowListener(object : WindowAdapter() {
+            override fun windowClosing(e: WindowEvent?) {
+                isVisible = false
+                dispose()
+                bus.post(ClosingUIEvent())
+            }
+        })
     }
 
     fun prepareAndShow() {
@@ -35,3 +49,4 @@ class JMainPanel(
         add(clientMaster, BorderLayout.CENTER)
     }
 }
+

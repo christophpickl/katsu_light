@@ -14,3 +14,5 @@ class ClientSaveRequestUIEvent
 data class TreatmentSelectedUIEvent(val treatment: Treatment)
 
 class TreatmentNewUIEvent
+
+class ClosingUIEvent

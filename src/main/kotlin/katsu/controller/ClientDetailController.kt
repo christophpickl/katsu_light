@@ -21,14 +21,14 @@ class ClientDetailController(
 
     @Subscribe
     fun onCurrentClientChangedEvent(event: CurrentClientModelEvent) {
-        log.debug { "onCurrentClientChangedEvent: $event" }
+        log.trace { "on $event" }
         clientDetail.updateUi(model.currentClient)
         clientDetail.inpFirstName.requestFocus()
     }
 
     @Subscribe
-    fun onClientCreateEvent(@Suppress("UNUSED_PARAMETER") event: ClientCreateRequestUIEvent) {
-        log.debug { "onClientCreateEvent" }
+    fun onClientCreateEvent(event: ClientCreateRequestUIEvent) {
+        log.trace { "on $event" }
         model.currentClient = Client.prototype()
     }
 

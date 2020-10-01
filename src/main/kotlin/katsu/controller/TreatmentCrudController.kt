@@ -12,7 +12,7 @@ class TreatmentCrudController(
     private val log = logger {}
 
     fun updateModel() {
-        log.debug { "update model" }
+        log.debug { "updateModel" }
         if (model.currentTreatment.isPrototype) {
             log.trace { "do nothing with treatment prototype" }
         } else {

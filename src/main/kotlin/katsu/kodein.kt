@@ -24,6 +24,7 @@ import katsu.view.JMainWindow
 import katsu.view.JTreatmentDetail
 import katsu.view.JTreatmentList
 import katsu.view.JTreatmentMaster
+import katsu.view.KatsuMenuBar
 import mu.KotlinLogging.logger
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -41,29 +42,24 @@ private val Env.windowTitle
 private val log = logger {}
 
 fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
-
-
     // generic
     bind<EventBus>() with singleton { EventBus() }
 
     // logic
 //    bind<DataLoader>() with singleton { InMemoryDataLoader() }
     bind<DataLoader>() with singleton {
-        JsonDataLoader(
-                targetFile = File(env.appDirectory, "data.json")
-        )
+        JsonDataLoader(targetFile = File(env.appDirectory, "data.json"))
     }
-
     bind<Model>() with singleton { Model(instance(), arrayListOf(), Client.prototype(), Treatment.prototype()) }
 
     // view
-    bind<JMainWindow>() with singleton { JMainWindow("${env.windowTitle} - v${MetaInfo.properties.appVersion}", instance()) }
+    bind<JMainWindow>() with singleton { JMainWindow("${env.windowTitle} - v${MetaInfo.properties.appVersion}", instance(), instance(), instance()) }
+    bind<KatsuMenuBar>() with singleton { KatsuMenuBar(instance()) }
     bind<JMainPanel>() with singleton { JMainPanel(instance(), instance()) }
     bind<JClientMaster>() with singleton { JClientMaster(instance(), instance(), instance()) }
     bind<JClientList>() with singleton { JClientList(instance()) }
     bind<ClientList>() with singleton { ClientList(instance()) }
     bind<JClientDetail>() with singleton { JClientDetail() }
-
     bind<JTreatmentList>() with singleton { JTreatmentList(instance()) }
     bind<JTreatmentMaster>() with singleton { JTreatmentMaster(instance(), instance(), instance()) }
     bind<JTreatmentDetail>() with singleton { JTreatmentDetail() }
@@ -79,5 +75,5 @@ fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
     bind<TreatmentCrudController>() with eagerSingleton { TreatmentCrudController(instance(), instance()) }
 
     // app
-    bind<ApplicationStarter>() with singleton { ApplicationStarter(instance()) }
+    bind<ApplicationStarter>() with singleton { ApplicationStarter(instance(), instance()) }
 }

@@ -4,9 +4,10 @@ import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
 import katsu.model.Model
 import katsu.view.ClientSaveRequestUIEvent
+import katsu.view.ClientSelectedUIEvent
+import katsu.view.ClosingUIEvent
 import katsu.view.JClientDetail
 import mu.KotlinLogging.logger
-import javax.swing.JOptionPane
 
 class ClientCrudController(
         bus: EventBus,
@@ -22,10 +23,28 @@ class ClientCrudController(
     }
 
     @Subscribe
-    fun onClientSaveRequestEvent(@Suppress("UNUSED_PARAMETER") event: ClientSaveRequestUIEvent) {
-        log.debug { "onClientSaveRequestEvent" }
-        if (clientDetail.inpFirstName.text.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "First name must not be empty!")
+    fun onClientSelectedUIEvent(event: ClientSelectedUIEvent) {
+        log.trace { "on $event" }
+        saveCurrentClient()
+        model.currentClient = event.client
+    }
+
+    @Subscribe
+    fun onClientSaveRequestEvent(event: ClientSaveRequestUIEvent) {
+        log.trace { "on $event" }
+        saveCurrentClient()
+    }
+
+    @Subscribe
+    fun onClosingUIEvent(event: ClosingUIEvent) {
+        log.trace { "on $event" }
+        saveCurrentClient()
+    }
+
+    fun saveCurrentClient() {
+        log.info { "saveCurrentClient()" }
+        if (model.isCurrentClientUnsaved && clientDetail.inpFirstName.text.isEmpty()) {
+            log.debug { "Ignoring unsaved empty client" }
             return
         }
 
@@ -34,20 +53,8 @@ class ClientCrudController(
 
         treatmentCrud.updateModel()
 
-        if(model.isCurrentClientUnsaved) {
+        if (model.isCurrentClientUnsaved) {
             model.addCurrentClient()
         }
-
-
-//        val client = event.client
-//        val clientToPost = if (client.isUnsaved) {
-//            val client2 = client.copy(id = UUID.randomUUID())
-//            data.add(client2)
-//            client2
-//        } else {
-//            data.update(client)
-//            client
-//        }
-//        bus.post(ClientSavedEvent(clientToPost, wasCreated = client.isUnsaved))
     }
 }

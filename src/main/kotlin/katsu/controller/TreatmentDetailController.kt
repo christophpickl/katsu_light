@@ -22,19 +22,20 @@ class TreatmentDetailController(
     }
 
     @Subscribe
-    fun onClientCreateRequestUIEvent(@Suppress("UNUSED_PARAMETER") event: ClientCreateRequestUIEvent) {
+    fun onClientCreateRequestUIEvent(event: ClientCreateRequestUIEvent) {
+        log.trace { "on $event" }
         model.currentTreatment = Treatment.prototype()
     }
 
     @Subscribe
     fun onCurrentTreatmentModelEvent(event: CurrentTreatmentModelEvent) {
+        log.trace { "on $event" }
         uiInit(event.currentTreatment)
     }
 
     @Subscribe
     fun onCurrentClientModelEvent(event: CurrentClientModelEvent) {
-        log.debug { "onCurrentClientChangedEvent: $event" }
-
+        log.trace { "on $event" }
         if (event.currentClient.treatments.isNotEmpty()) {
             model.currentTreatment = event.currentClient.treatments.first()
         } else {

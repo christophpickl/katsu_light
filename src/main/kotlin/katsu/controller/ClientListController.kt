@@ -6,7 +6,6 @@ import katsu.model.ClientAddedModelEvent
 import katsu.model.Model
 import katsu.view.ClientCreateRequestUIEvent
 import katsu.view.ClientList
-import katsu.view.ClientSelectedUIEvent
 import katsu.view.ClientsLoadedEvent
 import mu.KotlinLogging.logger
 
@@ -22,26 +21,20 @@ class ClientListController(
     }
 
     @Subscribe
-    fun onClientsLoadedEvent(@Suppress("UNUSED_PARAMETER") event: ClientsLoadedEvent) {
-        log.debug { "onClientsLoadedEvent: ${model.clients}" }
+    fun onClientsLoadedEvent(event: ClientsLoadedEvent) {
+        log.trace { "on $event" }
         clientList.clientsModel.addAll(model.clients)
     }
 
     @Subscribe
-    fun onClientSelectedEvent(@Suppress("unused") event: ClientSelectedUIEvent) {
-        log.debug { "onClientSelectedEvent" }
-        model.currentClient = event.client
-    }
-
-    @Subscribe
-    fun onClientCreateEvent(@Suppress("UNUSED_PARAMETER") event: ClientCreateRequestUIEvent) {
-        log.debug { "onClientCreateEvent" }
+    fun onClientCreateRequestUIEvent(event: ClientCreateRequestUIEvent) {
+        log.trace { "on $event" }
         clientList.clearSelection()
     }
 
     @Subscribe
     fun onClientAddedModelEvent(event: ClientAddedModelEvent) {
-        log.debug { "onClientAddedModelEvent: $event" }
+        log.trace { "on $event" }
         clientList.clientsModel.add(event.position, event.client)
         clientList.selectionModel.setSelectionInterval(event.position, event.position)
     }

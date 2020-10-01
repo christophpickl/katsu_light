@@ -30,9 +30,9 @@ class MainController(
     }
 
     fun persistData() {
+        log.info { "persistData()" }
         dataLoader.save(Data(
                 clients = model.clients
         ))
     }
-
 }

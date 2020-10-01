@@ -1,5 +1,6 @@
 package katsu
 
+import katsu.controller.ClientCrudController
 import katsu.controller.MainController
 import mu.KotlinLogging.logger
 import org.kodein.di.Kodein
@@ -33,12 +34,18 @@ object Katsu {
 }
 
 class ApplicationStarter(
-        private val mainController: MainController
+        private val mainController: MainController,
+        private val crudController: ClientCrudController
 ) {
+
+    private val log = logger {}
+
     fun startUp() {
         mainController.show()
         Runtime.getRuntime().addShutdownHook(object : Thread() {
             override fun run() {
+                log.info { "Shutdown hook running." }
+                crudController.saveCurrentClient()
                 mainController.persistData()
             }
         })
