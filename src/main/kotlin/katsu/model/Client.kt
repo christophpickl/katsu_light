@@ -1,9 +1,8 @@
 package katsu.model
 
-import katsu.Katsu
+import katsu.service.Images
 import java.awt.Image
 import java.util.UUID
-import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 
 data class Client(
@@ -11,7 +10,8 @@ data class Client(
         var firstName: String,
         val treatments: MutableList<Treatment>,
         var note: String,
-        var picture: Picture
+        var category: ClientCategory,
+        var picture: Picture,
 ) {
     companion object {
         fun prototype() = Client(
@@ -19,7 +19,8 @@ data class Client(
                 firstName = "",
                 treatments = arrayListOf(),
                 note = "",
-                picture = Picture.DefaultPicture
+                category = ClientCategory.Normal,
+                picture = Picture.DefaultPicture,
         )
     }
 
@@ -40,17 +41,28 @@ sealed class Picture(
 
     val image: Image = imageIcon.image
 
-    // AWT (buffered) Image
-    companion object {
-        private fun loadDefaultImage(): ImageIcon {
-            val pictureClasspath = "/katsu/images/profile_pic_default.png"
-            val imageResource = Katsu::class.java.getResource(pictureClasspath)
-                    ?: error("Could not find resource: '$pictureClasspath'!")
-            return ImageIcon(ImageIO.read(imageResource))
-        }
-    }
-
-    object DefaultPicture : Picture(loadDefaultImage())
+    object DefaultPicture : Picture(Images.load("profile_pic_default.png"))
 
     class ImageIconPicture(imageIcon: ImageIcon) : Picture(imageIcon)
+}
+
+enum class ClientCategory(
+        val label: String,
+        val jsonValue: String,
+        val image: ClientCategoryImage,
+) {
+    High("High", "high", ClientCategoryImage.Set(Images.load("clientcategory_high.png"))),
+    Normal("Normal", "normal", ClientCategoryImage.Unset),
+    Low("Low", "low", ClientCategoryImage.Set(Images.load("clientcategory_low.png"))),
+    ;
+
+    companion object {
+        private val categoryByJsonValue by lazy { values().associateBy { it.jsonValue } }
+        fun byJsonValue(value: String) = categoryByJsonValue[value] ?: error("Invalid JSON value: '$value'!")
+    }
+}
+
+sealed class ClientCategoryImage {
+    object Unset : ClientCategoryImage()
+    class Set(val imageIcon: ImageIcon) : ClientCategoryImage()
 }

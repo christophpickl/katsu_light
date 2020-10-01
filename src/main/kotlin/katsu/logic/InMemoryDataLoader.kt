@@ -1,6 +1,7 @@
 package katsu.logic
 
 import katsu.model.Client
+import katsu.model.ClientCategory
 import katsu.model.Picture
 import katsu.model.Treatment
 import java.time.LocalDate
@@ -17,6 +18,7 @@ class InMemoryDataLoader : DataLoader {
                                     Treatment(2, LocalDate.now().minusDays(1), "fuehlt sich gut"),
                                     Treatment(1, LocalDate.now().minusDays(2), "hab ich Bl und Due gemacht"),
                             ),
+                            category = ClientCategory.High,
                             picture = Picture.DefaultPicture,
                     ),
                     Client(
@@ -24,6 +26,7 @@ class InMemoryDataLoader : DataLoader {
                             firstName = "Anna",
                             note = "hektisch; schulterbeschwerde",
                             treatments = arrayListOf(),
+                            category = ClientCategory.Normal,
                             picture = Picture.DefaultPicture,
                     ),
             ),

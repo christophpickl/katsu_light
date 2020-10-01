@@ -2,7 +2,8 @@ package katsu.view
 
 import com.google.common.eventbus.EventBus
 import katsu.model.Client
-import katsu.model.Picture
+import katsu.model.ClientCategory
+import katsu.model.ClientCategoryImage
 import mu.KotlinLogging.logger
 import java.awt.Color
 import java.awt.Component
@@ -17,6 +18,7 @@ import javax.swing.BorderFactory
 import javax.swing.DefaultListModel
 import javax.swing.JLabel
 import javax.swing.JList
+import javax.swing.JMenu
 import javax.swing.JMenuItem
 import javax.swing.JPanel
 import javax.swing.JPopupMenu
@@ -48,6 +50,8 @@ class JClientList(
             override fun mouseClicked(e: MouseEvent) {
                 if (e.clickCount == 1 && e.button == MouseEvent.BUTTON3) {
                     val popup = JPopupMenu()
+                    popup.add(CategoryMenu(selectedValue))
+                    popup.addSeparator()
                     popup.add(JMenuItem("Delete ...").apply {
                         addActionListener {
                             bus.post(DeleteClientRequestUiEvent())
@@ -62,6 +66,22 @@ class JClientList(
     }
 }
 
+private class CategoryMenu(client: Client) : JMenu("Category") {
+    init {
+        ClientCategory.values().forEach { category ->
+            add(JMenuItem(category.label).apply {
+                if (client.category == category) {
+                    isEnabled = false
+                } else {
+                    addActionListener {
+                        client.category = category
+                    }
+                }
+            })
+        }
+    }
+}
+
 private class ClientCellRenderer : ListCellRenderer<Client> {
     private val panel = ClientCellPanel()
     override fun getListCellRendererComponent(list: JList<out Client>, value: Client, index: Int, isSelected: Boolean, cellHasFocus: Boolean): Component {
@@ -73,15 +93,15 @@ private class ClientCellRenderer : ListCellRenderer<Client> {
 class ClientCellPanel : JPanel(GridBagLayout()) {
 
     companion object {
-        private val verticalGap = 6
-        private val horizontalGap = 8
+        private const val verticalGap = 6
+        private const val horizontalGap = 8
         private val cellBorder = BorderFactory.createEmptyBorder(verticalGap, horizontalGap, verticalGap, horizontalGap)
         private val pictureSize = Dimension(60, 60)
         private val zeroInsets = Insets(0, 0, 0, 0)
         private val rightInsets = Insets(0, 0, 0, 10)
     }
 
-    private val picturePanel = JImagePanel(pictureSize, Picture.DefaultPicture)
+    private val picturePanel = JImagePanel(pictureSize, Client.prototype())
     private val lblName = JLabel()
 
     init {
@@ -104,17 +124,15 @@ class ClientCellPanel : JPanel(GridBagLayout()) {
     fun updateUi(client: Client, isSelected: Boolean) {
         background = UIManager.getColor(if (isSelected) "List.selectionBackground" else "List.background")
         lblName.foreground = UIManager.getColor(if (isSelected) "List.selectionForeground" else "List.foreground")
-
         lblName.text = client.firstName
-        picturePanel.picture = client.picture
-
+        picturePanel.client = client
         picturePanel.repaint()
     }
 }
 
 class JImagePanel(
         size: Dimension,
-        var picture: Picture
+        var client: Client
 ) : JPanel() {
     init {
         background = Color.RED
@@ -123,6 +141,10 @@ class JImagePanel(
     }
 
     override fun paint(g: Graphics) {
-        g.drawImage(picture.image, 0, 0, size.width, size.height, null)
+        g.drawImage(client.picture.image, 0, 0, size.width, size.height, null)
+        val clientImage = client.category.image
+        if (clientImage is ClientCategoryImage.Set) {
+            g.drawImage(clientImage.imageIcon.image, 0, 0, null)
+        }
     }
 }

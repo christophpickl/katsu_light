@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import katsu.model.Client
+import katsu.model.ClientCategory
 import katsu.model.Picture
 import katsu.model.Treatment
 import katsu.service.PictureService
@@ -77,6 +78,7 @@ private fun Client.toClientJson() = ClientJson(
         firstName = firstName,
         note = note,
         treatments = treatments.map { it.toTreatmentJson() }.toMutableList(),
+        category = category.jsonValue,
 )
 
 private fun Treatment.toTreatmentJson() = TreatmentJson(
@@ -98,6 +100,7 @@ private data class ClientJson(
         val id: String,
         val firstName: String,
         val note: String,
+        val category: String,
         val treatments: MutableList<TreatmentJson>,
 ) {
     fun toClient() = Client(
@@ -105,7 +108,8 @@ private data class ClientJson(
             firstName = firstName,
             note = note,
             treatments = treatments.map { it.toTreatment() }.toMutableList(),
-            picture = Picture.DefaultPicture
+            category = ClientCategory.byJsonValue(category),
+            picture = Picture.DefaultPicture,
     )
 }
 
