@@ -27,7 +27,6 @@ class JTreatmentMaster(
         c.gridy++
         c.weighty = 0.0
         c.fill = GridBagConstraints.NONE
-        // TODO disable, if no client selected (at app startup)
         add(JButton("New Treatment").apply { addActionListener { bus.post(TreatmentNewUIEvent()) } }, c)
 
         c.gridy = 0
@@ -38,24 +37,4 @@ class JTreatmentMaster(
         c.fill = GridBagConstraints.BOTH
         add(treatmentDetail, c)
     }
-
-//    @Subscribe
-//    fun onTreatmentSelectedEvent(event: TreatmentSelectedEvent) {
-//        uiInit(event.treatment)
-//    }
-//
-//    @Subscribe
-//    fun onClientCreateEvent(event: ClientCreateEvent) {
-//        uiReset()
-//    }
-//
-//    @Subscribe
-//    fun onClientSelectedEvent(event: ClientSelectedEvent) {
-//        if (event.client.treatments.isEmpty()) {
-//            uiReset()
-//        } else {
-//            uiInit(event.client.treatments.first())
-//        }
-//    }
-
 }

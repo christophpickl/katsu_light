@@ -15,6 +15,7 @@ import katsu.logic.JsonDataLoader
 import katsu.model.Client
 import katsu.model.Model
 import katsu.model.Treatment
+import katsu.service.PictureService
 import katsu.view.JClientDetail
 import katsu.view.JClientList
 import katsu.view.JClientMaster
@@ -24,7 +25,6 @@ import katsu.view.JTreatmentDetail
 import katsu.view.JTreatmentList
 import katsu.view.JTreatmentMaster
 import katsu.view.KatsuMenuBar
-import mu.KotlinLogging.logger
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.eagerSingleton
@@ -38,8 +38,6 @@ private val Env.windowTitle
         Prod -> "Katsu PROD"
     }
 
-private val log = logger {}
-
 fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
     // generic
     bind<EventBus>() with singleton { EventBus() }
@@ -47,9 +45,10 @@ fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
     // logic
 //    bind<DataLoader>() with singleton { InMemoryDataLoader() }
     bind<DataLoader>() with singleton {
-        JsonDataLoader(targetFile = File(env.appDirectory, "data.json"))
+        JsonDataLoader(targetFile = File(env.appDirectory, "data.json"), instance())
     }
     bind<Model>() with singleton { Model(instance(), arrayListOf(), Client.prototype(), Treatment.prototype()) }
+    bind<PictureService>() with singleton { PictureService(File(env.appDirectory, "pictures")) }
 
     // view
     bind<JMainWindow>() with singleton { JMainWindow("${env.windowTitle} - v${MetaInfo.properties.appVersion}", instance(), instance(), instance()) }
@@ -64,7 +63,7 @@ fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
 
     // controller
     bind<MainController>() with eagerSingleton { MainController(instance(), instance(), instance(), instance()) }
-    bind<ClientListController>() with eagerSingleton { ClientListController(instance(), instance(), instance()) }
+    bind<ClientListController>() with eagerSingleton { ClientListController(instance(), instance(), instance(), instance()) }
     bind<ClientDetailController>() with eagerSingleton { ClientDetailController(instance(), instance(), instance()) }
     bind<ClientCrudController>() with eagerSingleton { ClientCrudController(instance(), instance(), instance(), instance()) }
 

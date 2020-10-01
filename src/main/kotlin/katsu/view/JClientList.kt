@@ -11,6 +11,8 @@ import java.awt.Graphics
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.Insets
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import javax.swing.BorderFactory
 import javax.swing.DefaultListModel
 import javax.swing.JLabel
@@ -39,6 +41,14 @@ class JClientList(
                 bus.post(ClientSelectedUIEvent(selectedClient))
             }
         }
+
+        addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent) {
+                if (e.clickCount == 2) {
+                    bus.post(ChangePictureRequestUIEvent())
+                }
+            }
+        })
     }
 }
 

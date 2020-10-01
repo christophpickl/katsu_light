@@ -9,7 +9,6 @@ import javax.swing.JTextArea
 
 class JTreatmentDetail() : JPanel(GridBagLayout()) {
 
-    // TODO date
     val txtTitle = JLabel()
     val inpText = JTextArea()
 

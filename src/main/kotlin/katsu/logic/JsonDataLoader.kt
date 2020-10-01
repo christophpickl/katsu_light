@@ -10,16 +10,16 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import katsu.model.Client
 import katsu.model.Picture
 import katsu.model.Treatment
+import katsu.service.PictureService
 import mu.KotlinLogging.logger
 import java.io.File
 import java.time.LocalDate
 import java.util.UUID
 
-
 class JsonDataLoader(
-        private val targetFile: File
+        private val targetFile: File,
+        private val pictureService: PictureService
 ) : DataLoader {
-
 
     private val log = logger {}
     private val jackson = jacksonObjectMapper().apply {
@@ -38,10 +38,10 @@ class JsonDataLoader(
         val fileVersion = jsonTree["version"].intValue()
         if (fileVersion == Migrator.currentVersion) {
             log.debug { "Most current data v$fileVersion stored, no migration needed." }
-            return jackson.readData(jsonTxt)
+            return jackson.readData(jsonTxt).enhancePictures()
         }
         migrate(fileVersion, jsonTree)
-        return jackson.readData(targetFile.readText())
+        return jackson.readData(targetFile.readText()).enhancePictures()
     }
 
     private fun migrate(fileVersion: Int, jsonTree: JsonNode) {
@@ -61,14 +61,20 @@ class JsonDataLoader(
                 clients = data.clients.map { it.toClientJson() }
         )))
     }
+
+    private fun Data.enhancePictures() = apply {
+        clients.forEach { client ->
+            client.picture = pictureService.load(client)
+        }
+    }
 }
+
 
 private fun ObjectMapper.readData(json: String) = readValue<JsonVersionedData>(json).toData()
 
 private fun Client.toClientJson() = ClientJson(
         id = id.toString(),
         firstName = firstName,
-        pictureEncoded = null,
         note = note,
         treatments = treatments.map { it.toTreatmentJson() }.toMutableList(),
 )
@@ -91,16 +97,15 @@ private data class JsonVersionedData(
 private data class ClientJson(
         val id: String,
         val firstName: String,
-        val pictureEncoded: String?,
         val note: String,
         val treatments: MutableList<TreatmentJson>,
 ) {
     fun toClient() = Client(
             id = UUID.fromString(id),
             firstName = firstName,
-            picture = Picture.DefaultPicture, // TODO picture
             note = note,
-            treatments = treatments.map { it.toTreatment() }.toMutableList()
+            treatments = treatments.map { it.toTreatment() }.toMutableList(),
+            picture = Picture.DefaultPicture
     )
 }
 

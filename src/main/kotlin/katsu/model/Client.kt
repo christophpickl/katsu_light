@@ -51,4 +51,6 @@ sealed class Picture(
     }
 
     object DefaultPicture : Picture(loadDefaultImage())
+
+    class ImageIconPicture(imageIcon: ImageIcon) : Picture(imageIcon)
 }

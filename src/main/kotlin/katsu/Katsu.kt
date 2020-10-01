@@ -5,6 +5,7 @@ import katsu.controller.MainController
 import mu.KotlinLogging.logger
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
+import javax.swing.SwingUtilities
 
 object Katsu {
 
@@ -34,7 +35,9 @@ class ApplicationStarter(
     private val log = logger {}
 
     fun startUp() {
-        mainController.show()
+        SwingUtilities.invokeLater {
+            mainController.show()
+        }
         Runtime.getRuntime().addShutdownHook(object : Thread() {
             override fun run() {
                 log.info { "Shutdown hook running." }
