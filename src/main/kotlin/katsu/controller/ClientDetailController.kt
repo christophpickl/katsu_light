@@ -23,7 +23,6 @@ class ClientDetailController(
     fun onCurrentClientChangedEvent(event: CurrentClientModelEvent) {
         log.trace { "on $event" }
         clientDetail.updateUi(model.currentClient)
-        clientDetail.inpFirstName.requestFocus()
     }
 
     @Subscribe

@@ -9,14 +9,22 @@ data class Treatment(
 ) : Comparable<Treatment> {
 
     companion object {
+        private const val PROTOTYPE_NUMBER = -42
+
         fun prototype() = Treatment(
-                number = -1,
+                number = PROTOTYPE_NUMBER,
                 date = LocalDate.now(),
                 note = ""
         )
     }
 
-    val isPrototype = number == -1
+    val isPrototype = number == PROTOTYPE_NUMBER
 
     override fun compareTo(other: Treatment) = other.number - number
+
+    private val lazyString by lazy {
+        "Treatment[number=$number, date=$date]"
+    }
+
+    override fun toString() = lazyString
 }

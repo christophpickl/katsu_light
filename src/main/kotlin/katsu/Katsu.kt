@@ -12,7 +12,7 @@ object Katsu {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        log.info { "KATSU main ..." }
+        log.info { "Katsu main entry point running." }
         val env = Env.loadCurrent()
 //        var msg = "Manifests:\n"
 //        Katsu::class.java.classLoader.getResources("META-INF/MANIFEST.MF").asIterator().forEach { url ->
@@ -22,8 +22,8 @@ object Katsu {
 //            }
 //        }
 //        JOptionPane.showMessageDialog(null, msg)
-        log.info { "Starting kodein with environment: $env" }
-        log.info { "==============================================" }
+        log.info { "Starting kodein with environment: $env (v${MetaInfo.properties.appVersion})" }
+        log.info { "=============================================" }
         val kodein = Kodein {
             import(applicationKodein(env))
         }

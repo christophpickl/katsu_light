@@ -1,6 +1,6 @@
 package katsu.model
 
-import java.util.*
+import java.util.UUID
 
 data class Client(
         val id: UUID,
@@ -18,11 +18,16 @@ data class Client(
         )
     }
 
-    val debugString get() = "Client[$firstName, treatments: ${treatments.size}]"
 
     fun nextTreatment() = Treatment.prototype().copy(
             number = treatments.size + 1
     )
+
+    private val lazyString by lazy {
+        "Client[$firstName, treatments: ${treatments.size}]"
+    }
+
+    override fun toString() = lazyString
 }
 
 class Picture {

@@ -14,7 +14,8 @@ import mu.KotlinLogging.logger
 class TreatmentListController(
         bus: EventBus,
         private val model: Model,
-        private val treatmentList: JTreatmentList
+        private val treatmentList: JTreatmentList,
+        private val crudController: TreatmentCrudController
 ) {
     private val log = logger {}
 
@@ -49,6 +50,7 @@ class TreatmentListController(
     @Subscribe
     fun onTreatmentSelectedUIEvent(event: TreatmentSelectedUIEvent) {
         log.trace { "on $event" }
+        crudController.updateModel()
         model.currentTreatment = event.treatment
     }
 
