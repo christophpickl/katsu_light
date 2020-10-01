@@ -15,7 +15,6 @@ import katsu.logic.JsonDataLoader
 import katsu.model.Client
 import katsu.model.Model
 import katsu.model.Treatment
-import katsu.view.ClientList
 import katsu.view.JClientDetail
 import katsu.view.JClientList
 import katsu.view.JClientMaster
@@ -58,7 +57,6 @@ fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
     bind<JMainPanel>() with singleton { JMainPanel(instance(), instance()) }
     bind<JClientMaster>() with singleton { JClientMaster(instance(), instance(), instance()) }
     bind<JClientList>() with singleton { JClientList(instance()) }
-    bind<ClientList>() with singleton { ClientList(instance()) }
     bind<JClientDetail>() with singleton { JClientDetail() }
     bind<JTreatmentList>() with singleton { JTreatmentList(instance()) }
     bind<JTreatmentMaster>() with singleton { JTreatmentMaster(instance(), instance(), instance()) }

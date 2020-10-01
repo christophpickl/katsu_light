@@ -5,14 +5,14 @@ import com.google.common.eventbus.Subscribe
 import katsu.model.ClientAddedModelEvent
 import katsu.model.Model
 import katsu.view.ClientCreateRequestUIEvent
-import katsu.view.ClientList
 import katsu.view.ClientsLoadedEvent
+import katsu.view.JClientList
 import mu.KotlinLogging.logger
 
 class ClientListController(
         bus: EventBus,
         private val model: Model,
-        private val clientList: ClientList
+        private val clientList: JClientList
 ) {
     private val log = logger {}
 

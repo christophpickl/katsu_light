@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent
 import javax.swing.BorderFactory
 import javax.swing.JFrame
 import javax.swing.JPanel
+import javax.swing.JScrollPane
 import javax.swing.WindowConstants
 
 class JMainWindow(
@@ -45,7 +46,7 @@ class JMainPanel(
 ) : JPanel(BorderLayout()) {
     init {
         border = BorderFactory.createEmptyBorder(20, 10, 20, 10)
-        add(clientList, BorderLayout.WEST)
+        add(JScrollPane(clientList), BorderLayout.WEST)
         add(clientMaster, BorderLayout.CENTER)
     }
 }

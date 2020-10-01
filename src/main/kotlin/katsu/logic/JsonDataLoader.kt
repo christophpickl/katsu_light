@@ -8,11 +8,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import katsu.model.Client
+import katsu.model.Picture
 import katsu.model.Treatment
 import mu.KotlinLogging.logger
 import java.io.File
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 
 class JsonDataLoader(
@@ -97,7 +98,7 @@ private data class ClientJson(
     fun toClient() = Client(
             id = UUID.fromString(id),
             firstName = firstName,
-            picture = null, // TODO picture
+            picture = Picture.DefaultPicture, // TODO picture
             note = note,
             treatments = treatments.map { it.toTreatment() }.toMutableList()
     )

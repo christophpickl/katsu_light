@@ -2,9 +2,10 @@ package katsu
 
 import katsu.logic.Data
 import katsu.model.Client
+import katsu.model.Picture
 import katsu.model.Treatment
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 fun Data.Companion.fullInstance() = Data(
         clients = listOf(
@@ -19,7 +20,7 @@ fun Client.Companion.fullInstance() = Client(
                 Treatment.fullInstance()
         ),
         note = "client note",
-        picture = null
+        picture = Picture.DefaultPicture
 )
 
 fun Treatment.Companion.fullInstance() = Treatment(

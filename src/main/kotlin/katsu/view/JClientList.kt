@@ -2,29 +2,25 @@ package katsu.view
 
 import com.google.common.eventbus.EventBus
 import katsu.model.Client
+import katsu.model.Picture
 import mu.KotlinLogging.logger
-import java.awt.BorderLayout
+import java.awt.Color
 import java.awt.Component
 import java.awt.Dimension
-import java.util.*
-import javax.swing.DefaultListCellRenderer
+import java.awt.Graphics
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
+import java.awt.Insets
+import javax.swing.BorderFactory
 import javax.swing.DefaultListModel
 import javax.swing.JLabel
 import javax.swing.JList
 import javax.swing.JPanel
-import javax.swing.JScrollPane
 import javax.swing.ListCellRenderer
 import javax.swing.ListSelectionModel
+import javax.swing.UIManager
 
 class JClientList(
-        clientList: ClientList
-) : JPanel(BorderLayout()) {
-    init {
-        add(JScrollPane(clientList), BorderLayout.CENTER)
-    }
-}
-
-class ClientList(
         bus: EventBus
 ) : JList<Client>() {
 
@@ -32,9 +28,9 @@ class ClientList(
     val clientsModel = DefaultListModel<Client>()
 
     init {
+        layoutOrientation = VERTICAL
         model = clientsModel
         cellRenderer = ClientCellRenderer()
-        preferredSize = Dimension(200, preferredSize.height)
         selectionMode = ListSelectionModel.SINGLE_SELECTION
         addListSelectionListener { e ->
             if (!e.valueIsAdjusting && selectedIndex != -1) { // if clearSelection() => index is -1
@@ -44,32 +40,69 @@ class ClientList(
             }
         }
     }
-
-//    @Subscribe
-//    fun onClientSavedEvent(event: ClientSavedEvent) {
-//        if (event.wasCreated) {
-//            clientsModel.add(0, event.client)
-//        } else {
-//            val clientIndex = clientsModel.findClientIndexFor(event.client.id)
-//            clientsModel.setElementAt(event.client, clientIndex)
-//        }
-//    }
-}
-
-private fun DefaultListModel<Client>.findClientIndexFor(searchId: UUID): Int {
-    for (i in 0 until size()) {
-        if (get(i).id == searchId) {
-            return i
-        }
-    }
-    return -1
 }
 
 private class ClientCellRenderer : ListCellRenderer<Client> {
-    private val delegate = DefaultListCellRenderer()
+    private val panel = ClientCellPanel()
     override fun getListCellRendererComponent(list: JList<out Client>, value: Client, index: Int, isSelected: Boolean, cellHasFocus: Boolean): Component {
-        val label = delegate.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus) as JLabel
-        label.text = value.firstName
-        return label
+        panel.updateUi(value, isSelected)
+        return panel
+    }
+}
+
+class ClientCellPanel : JPanel(GridBagLayout()) {
+
+    companion object {
+        private val verticalGap = 6
+        private val horizontalGap = 8
+        private val cellBorder = BorderFactory.createEmptyBorder(verticalGap, horizontalGap, verticalGap, horizontalGap)
+        private val pictureSize = Dimension(60, 60)
+        private val zeroInsets = Insets(0, 0, 0, 0)
+        private val rightInsets = Insets(0, 0, 0, 10)
+    }
+
+    private val picturePanel = JImagePanel(pictureSize, Picture.DefaultPicture)
+    private val lblName = JLabel()
+
+    init {
+        border = cellBorder
+        val c = GridBagConstraints()
+        c.gridx = 0
+        c.gridy = 0
+        c.weightx = 0.0
+        c.fill = GridBagConstraints.NONE
+        c.insets = rightInsets
+        add(picturePanel, c)
+
+        c.gridx++
+        c.weightx = 1.0
+        c.fill = GridBagConstraints.BOTH
+        c.insets = zeroInsets
+        add(lblName, c)
+    }
+
+    fun updateUi(client: Client, isSelected: Boolean) {
+        background = UIManager.getColor(if (isSelected) "List.selectionBackground" else "List.background")
+        lblName.foreground = UIManager.getColor(if (isSelected) "List.selectionForeground" else "List.foreground")
+
+        lblName.text = client.firstName
+        picturePanel.picture = client.picture
+
+        picturePanel.repaint()
+    }
+}
+
+class JImagePanel(
+        size: Dimension,
+        var picture: Picture
+) : JPanel() {
+    init {
+        background = Color.RED
+        preferredSize = size
+        minimumSize = size
+    }
+
+    override fun paint(g: Graphics) {
+        g.drawImage(picture.image, 0, 0, size.width, size.height, null)
     }
 }

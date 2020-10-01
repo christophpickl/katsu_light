@@ -14,16 +14,9 @@ object Katsu {
     fun main(args: Array<String>) {
         log.info { "Katsu main entry point running." }
         val env = Env.loadCurrent()
-//        var msg = "Manifests:\n"
-//        Katsu::class.java.classLoader.getResources("META-INF/MANIFEST.MF").asIterator().forEach { url ->
-//            url.openStream().use { stream ->
-//                val manifest = Manifest(stream)
-//                msg += "XXX: ${manifest.entries}\n"
-//            }
-//        }
-//        JOptionPane.showMessageDialog(null, msg)
         log.info { "Starting kodein with environment: $env (v${MetaInfo.properties.appVersion})" }
         log.info { "=============================================" }
+
         val kodein = Kodein {
             import(applicationKodein(env))
         }
