@@ -12,10 +12,10 @@ import katsu.controller.TreatmentDetailController
 import katsu.controller.TreatmentListController
 import katsu.logic.DataLoader
 import katsu.logic.JsonDataLoader
+import katsu.logic.PictureService
 import katsu.model.Client
 import katsu.model.Model
 import katsu.model.Treatment
-import katsu.service.PictureService
 import katsu.view.JClientDetail
 import katsu.view.JClientList
 import katsu.view.JClientMaster

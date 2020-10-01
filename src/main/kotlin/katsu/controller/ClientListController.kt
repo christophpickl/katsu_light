@@ -2,9 +2,9 @@ package katsu.controller
 
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
+import katsu.logic.PictureService
 import katsu.model.ClientAddedModelEvent
 import katsu.model.Model
-import katsu.service.PictureService
 import katsu.view.ChangePictureRequestUIEvent
 import katsu.view.ClientCreateRequestUIEvent
 import katsu.view.ClientsLoadedEvent

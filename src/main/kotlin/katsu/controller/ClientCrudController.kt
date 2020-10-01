@@ -2,9 +2,9 @@ package katsu.controller
 
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
+import katsu.logic.PictureService
 import katsu.model.Client
 import katsu.model.Model
-import katsu.service.PictureService
 import katsu.view.ClientSaveRequestUIEvent
 import katsu.view.ClientSelectedUIEvent
 import katsu.view.ClosingUIEvent
@@ -54,7 +54,6 @@ class ClientCrudController(
             return
         }
 
-        // FIXME implement delete
         model.delete(client)
         pictureService.delete(client)
         model.currentClient = Client.prototype()

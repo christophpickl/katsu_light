@@ -1,6 +1,6 @@
 package katsu.model
 
-import katsu.service.Images
+import katsu.logic.Images
 import java.awt.Image
 import java.util.UUID
 import javax.swing.ImageIcon

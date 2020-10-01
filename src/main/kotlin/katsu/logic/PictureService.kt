@@ -1,4 +1,4 @@
-package katsu.service
+package katsu.logic
 
 import katsu.controller.size
 import katsu.model.Client

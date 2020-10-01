@@ -1,4 +1,4 @@
-package katsu.service
+package katsu.logic
 
 import katsu.Katsu
 import javax.imageio.ImageIO

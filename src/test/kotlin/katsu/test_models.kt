@@ -2,6 +2,7 @@ package katsu
 
 import katsu.logic.Data
 import katsu.model.Client
+import katsu.model.ClientCategory
 import katsu.model.Picture
 import katsu.model.Treatment
 import java.time.LocalDate
@@ -20,7 +21,8 @@ fun Client.Companion.fullInstance() = Client(
                 Treatment.fullInstance()
         ),
         note = "client note",
-        picture = Picture.DefaultPicture
+        category = ClientCategory.Normal,
+        picture = Picture.DefaultPicture,
 )
 
 fun Treatment.Companion.fullInstance() = Treatment(

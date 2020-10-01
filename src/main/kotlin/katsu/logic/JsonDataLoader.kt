@@ -11,7 +11,6 @@ import katsu.model.Client
 import katsu.model.ClientCategory
 import katsu.model.Picture
 import katsu.model.Treatment
-import katsu.service.PictureService
 import mu.KotlinLogging.logger
 import java.io.File
 import java.time.LocalDate
@@ -59,7 +58,7 @@ class JsonDataLoader(
         }
         targetFile.writeText(jackson.writeValueAsString(JsonVersionedData(
                 version = Migrator.currentVersion,
-                clients = data.clients.map { it.toClientJson() }
+                clients = data.clients.map { it.toClientJson() }.sortedBy { it.firstName }
         )))
     }
 

@@ -11,6 +11,26 @@ class Model(
         currentTreatment: Treatment
 ) {
 
+    companion object {
+        fun calculateAddPosition(names: List<String>, search: String): Int {
+            if (names.isEmpty()) {
+                return 0
+            }
+            var found = false
+            var pos = 0
+            do {
+                val currentName = names[pos]
+                println("$currentName < $search === ${currentName < search}")
+                if (currentName > search) {
+                    found = true
+                } else {
+                    pos++
+                }
+            } while (!found && (pos < names.size))
+            return pos
+        }
+    }
+
     private val log = logger {}
     private val _clients: MutableList<Client> = clients
     val isCurrentClientUnsaved: Boolean get() = !_clients.contains(currentClient)
@@ -18,8 +38,7 @@ class Model(
     val clients: List<Client> get() = _clients
 
     fun addCurrentClient() {
-        // TODO calculate proper index based on firstname
-        val position = 0
+        val position = calculateAddPosition(_clients.map { it.firstName }, currentClient.firstName)
         _clients.add(position, currentClient)
         bus.post(ClientAddedModelEvent(currentClient, position))
     }

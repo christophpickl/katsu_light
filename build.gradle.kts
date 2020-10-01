@@ -41,7 +41,7 @@ dependencies {
 
     testImplementation("org.testng:testng:${Versions.testng}")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:${Versions.assertk}")
-//    testImplementation("io.mockk:mockk:${Versions.mockk}")
+    testImplementation("io.mockk:mockk:${Versions.mockk}")
     testImplementation("org.skyscreamer:jsonassert:${Versions.jsonassert}")
     // testImplementation("com.jayway.jsonpath:json-path:${Versions.jsonPath}")
     // testImplementation("com.github.tomakehurst:wiremock-jre8:${Versions.wiremock}")
