@@ -2,45 +2,53 @@
 
 A shiatsu management desktop application.
 
+
 # Todo
 
-## Iteration 2
+## In Progress
+
+### Iteration 2
 
 * ~~packaging of app (JAR is good enough)~~
 * ~~DEV/PROD mode (different save location)~~
 * ~~data migrator~~
 * pictures
 
-## Iteration 1
+### Iteration 3
 
-* ~~list of treatments~~
-* ~~text area for treatment~~
-* ~~repository (JSON full data load)~~
-* ~~add shutdown hook to persist data~~
-
-## Iteration 3
-
+* gadsu importer
+* new property client: active, birthday, flags (tantsu, donations, like-A, like-C)
 * treatment counter/days ago
-* new property client: birthday, flags (tantsu, donations, like-A, like-C)
 * store preferences in JSON data (window size/position, recent folders, ...)
 
-## Iteration X
+## Future
+
+### Iteration X
 
 * searching/filtering/sorting of client list
 * auto backup on startup (keep x recent backups)
 * versions gradle plugin
 
-## Iteration Y
+### Iteration Y
 
 * more TCM like stuff (elements, colors, meridians, indications from prefilled list)
 * rich text editor
 * google calendar integration
 * gmail integration
 
-## Iteration Z
+### Iteration Z
 
 * doodle integration / custom solution
 * human body indicating issues
+
+## Done
+
+### Iteration 1
+
+* ~~list of treatments~~
+* ~~text area for treatment~~
+* ~~repository (JSON full data load)~~
+* ~~add shutdown hook to persist data~~
 
 
 # Notes
