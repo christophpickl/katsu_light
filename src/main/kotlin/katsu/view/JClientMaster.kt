@@ -1,15 +1,12 @@
 package katsu.view
 
-import com.google.common.eventbus.EventBus
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import javax.swing.BorderFactory
 import javax.swing.JPanel
 import javax.swing.JSplitPane
 
-
 class JClientMaster(
-        bus: EventBus,
         clientDetail: JClientDetail,
         treatments: JTreatmentMaster
 ) : JPanel(GridBagLayout()) {
@@ -30,24 +27,4 @@ class JClientMaster(
         }
         add(splitPane, c)
     }
-
-//    private fun readClient() = Client(
-//            id = clientDetailPanel.clientId,
-//            firstName = clientDetailPanel.inpFirstName.text,
-//            text = clientDetailPanel.inpText.text,
-//            treatments = treatmentPanel.treatmentList.treatmentsModel.elements().toList().sorted()
-//    ).enhanceTreatments()
-
-//    private fun Client.enhanceTreatments(): Client {
-//        if (isUnsaved) {
-//            return this
-//        }
-//        // have to change treatment list model as well!
-//        val updatedTreatments = treatments.associateBy { it.number }.toMutableMap()
-//        val currentTreatment = treatmentPanel.readTreatment()
-//        if (currentTreatment != null) {
-//            updatedTreatments[currentTreatment.number] = currentTreatment
-//        }
-//        return copy(treatments = updatedTreatments.values.toList().sorted())
-//    }
 }

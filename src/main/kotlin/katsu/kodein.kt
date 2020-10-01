@@ -54,7 +54,7 @@ fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
     bind<JMainWindow>() with singleton { JMainWindow("${env.windowTitle} - v${MetaInfo.properties.appVersion}", instance(), instance(), instance()) }
     bind<KatsuMenuBar>() with singleton { KatsuMenuBar(instance()) }
     bind<JMainPanel>() with singleton { JMainPanel(instance(), instance()) }
-    bind<JClientMaster>() with singleton { JClientMaster(instance(), instance(), instance()) }
+    bind<JClientMaster>() with singleton { JClientMaster(instance(), instance()) }
     bind<JClientList>() with singleton { JClientList(instance()) }
     bind<JClientDetail>() with singleton { JClientDetail() }
     bind<JTreatmentList>() with singleton { JTreatmentList(instance()) }

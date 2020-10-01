@@ -1,14 +1,16 @@
 package katsu.view
 
 import com.google.common.eventbus.EventBus
-import java.awt.BorderLayout
 import java.awt.Dimension
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.BorderFactory
 import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.JScrollPane
+import javax.swing.ScrollPaneConstants
 import javax.swing.WindowConstants
 
 class JMainWindow(
@@ -43,11 +45,28 @@ class JMainWindow(
 class JMainPanel(
         clientMaster: JClientMaster,
         clientList: JClientList
-) : JPanel(BorderLayout()) {
+) : JPanel(GridBagLayout()) {
+    private val listWidth = 200
+
     init {
         border = BorderFactory.createEmptyBorder(20, 10, 20, 10)
-        add(JScrollPane(clientList), BorderLayout.WEST)
-        add(clientMaster, BorderLayout.CENTER)
+
+        val c = GridBagConstraints()
+        c.gridx = 0
+        c.gridy = 0
+        c.fill = GridBagConstraints.BOTH
+        c.weightx = 0.0
+        c.weighty = 1.0
+        add(JScrollPane(clientList).apply {
+            horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+            verticalScrollBarPolicy = ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS
+            preferredSize = Dimension(listWidth, preferredSize.height)
+        }, c)
+
+        c.gridx++
+        c.fill = GridBagConstraints.BOTH
+        c.weightx = 1.0
+        add(clientMaster, c)
     }
 }
 
