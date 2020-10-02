@@ -20,6 +20,7 @@ class InMemoryDataLoader : DataLoader {
                             ),
                             category = ClientCategory.High,
                             picture = Picture.DefaultPicture,
+                            active = true,
                     ),
                     Client(
                             id = UUID.fromString("00000000-0000-0000-0000-000000000002"),
@@ -28,6 +29,7 @@ class InMemoryDataLoader : DataLoader {
                             treatments = arrayListOf(),
                             category = ClientCategory.Normal,
                             picture = Picture.DefaultPicture,
+                            active = true,
                     ),
             ),
     )

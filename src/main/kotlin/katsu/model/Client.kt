@@ -11,6 +11,7 @@ data class Client(
         val treatments: MutableList<Treatment>,
         var note: String,
         var category: ClientCategory,
+        var active: Boolean,
         var picture: Picture,
 ) {
     companion object {
@@ -21,6 +22,7 @@ data class Client(
                 note = "",
                 category = ClientCategory.Normal,
                 picture = Picture.DefaultPicture,
+                active = true,
         )
     }
 

@@ -29,7 +29,7 @@ class JsonDataLoaderTest {
         loader.save(data)
 
         JSONAssert.assertEquals(
-                """{"version":1,"clients":[{"id":"ae4903fd-dedf-4c58-8555-5e7ccaf5dc52","firstName":"first","note":"client note","category":"normal","treatments":[{"number":1,"date":"2020-09-25","note":"treatment note"}]}]}""",
+                """{"version":1,"clients":[{"id":"ae4903fd-dedf-4c58-8555-5e7ccaf5dc52","firstName":"first",active:true,"note":"client note","category":"normal","treatments":[{"number":1,"date":"2020-09-25","note":"treatment note"}]}]}""",
                 target.readText(),
                 true
         )

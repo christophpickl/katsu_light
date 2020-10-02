@@ -23,6 +23,7 @@ fun Client.Companion.fullInstance() = Client(
         note = "client note",
         category = ClientCategory.Normal,
         picture = Picture.DefaultPicture,
+        active = true,
 )
 
 fun Treatment.Companion.fullInstance() = Treatment(

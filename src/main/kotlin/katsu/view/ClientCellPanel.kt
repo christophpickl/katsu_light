@@ -46,7 +46,9 @@ class ClientCellPanel : JPanel(GridBagLayout()) {
 
     fun updateUi(client: Client, isSelected: Boolean) {
         background = UIManager.getColor(if (isSelected) "List.selectionBackground" else "List.background")
-        lblName.foreground = UIManager.getColor(if (isSelected) "List.selectionForeground" else "List.foreground")
+        lblName.foreground = UIManager.getColor(if (isSelected) "List.selectionForeground" else "List.foreground").let {
+            if (!client.active) Color.GRAY else it
+        }
         lblName.text = client.firstName
         picturePanel.client = client
         picturePanel.repaint()

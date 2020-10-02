@@ -35,25 +35,38 @@ class JClientList(
             }
         }
 
-        addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent) {
-                if (e.clickCount == 1 && e.button == MouseEvent.BUTTON3) {
-                    val popup = JPopupMenu()
-                    popup.add(CategoryMenu(selectedValue))
-                    popup.addSeparator()
-                    popup.add(JMenuItem("Delete ...").apply {
-                        addActionListener {
-                            bus.post(DeleteClientRequestUiEvent())
-                        }
-                    })
-                    popup.show(this@JClientList, e.x, e.y)
-                } else if (e.clickCount == 2 && e.button == MouseEvent.BUTTON1) {
-                    bus.post(ChangePictureRequestUIEvent())
-                }
-            }
-        })
+        addMouseListener(ClientPopupListener(bus, this))
     }
 }
+
+private class ClientPopupListener(
+        private val bus: EventBus,
+        private val list: JClientList
+) : MouseAdapter() {
+    override fun mouseClicked(e: MouseEvent) {
+        if (e.clickCount == 1 && e.button == MouseEvent.BUTTON3) {
+            val client = list.selectedValue
+            val popup = JPopupMenu().apply {
+                add(CategoryMenu(client))
+                add(JMenuItem(if (client.active) "Deactive" else "Activate").apply {
+                    addActionListener {
+                        client.active = !client.active
+                    }
+                })
+                addSeparator()
+                add(JMenuItem("Delete ...").apply {
+                    addActionListener {
+                        bus.post(DeleteClientRequestUiEvent())
+                    }
+                })
+            }
+            popup.show(list, e.x, e.y)
+        } else if (e.clickCount == 2 && e.button == MouseEvent.BUTTON1) {
+            bus.post(ChangePictureRequestUIEvent())
+        }
+    }
+}
+
 
 private class CategoryMenu(client: Client) : JMenu("Category") {
     init {
