@@ -1,6 +1,7 @@
 package katsu.view
 
 import com.google.common.eventbus.EventBus
+import katsu.logic.FilterAndSort
 import katsu.model.Client
 import katsu.model.ClientCategory
 import mu.KotlinLogging.logger
@@ -16,11 +17,34 @@ import javax.swing.ListCellRenderer
 import javax.swing.ListSelectionModel
 
 class JClientList(
-        bus: EventBus
+        bus: EventBus,
+        private val filter: FilterAndSort,
 ) : JList<Client>() {
 
+    private val unfilteredClients = mutableListOf<Client>()
+
+    fun addClient(position: Int, client: Client) {
+        clientsModel.add(position, client)
+        unfilteredClients.add(position, client)
+    }
+
+    fun removeClient(client: Client) {
+        clientsModel.removeElement(client)
+        unfilteredClients.remove(client)
+    }
+
+    fun addClients(clients: List<Client>) {
+        unfilteredClients += clients
+        applyFilter()
+    }
+
+    fun applyFilter() {
+        clientsModel.removeAllElements()
+        clientsModel.addAll(filter.filter(unfilteredClients))
+    }
+
     private val log = logger {}
-    val clientsModel = DefaultListModel<Client>()
+    private val clientsModel = DefaultListModel<Client>()
 
     init {
         layoutOrientation = VERTICAL
@@ -28,6 +52,7 @@ class JClientList(
         cellRenderer = ClientCellRenderer()
         selectionMode = ListSelectionModel.SINGLE_SELECTION
         addListSelectionListener { e ->
+            // TODO not listen to selection, but to click/keyboard-up-down
             if (!e.valueIsAdjusting && selectedIndex != -1) { // if clearSelection() => index is -1
                 val selectedClient = clientsModel.elementAt(selectedIndex)
                 log.debug { "List selection changed to: $selectedClient" }
@@ -50,7 +75,7 @@ private class ClientPopupListener(
                 add(CategoryMenu(client))
                 add(JMenuItem(if (client.active) "Deactive" else "Activate").apply {
                     addActionListener {
-                        client.active = !client.active
+                        bus.post(ChangeClientActivationUIEvent())
                     }
                 })
                 addSeparator()

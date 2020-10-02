@@ -2,13 +2,17 @@ package katsu.controller
 
 import com.google.common.eventbus.EventBus
 import com.google.common.eventbus.Subscribe
+import katsu.logic.FilterAndSort
 import katsu.logic.PictureService
+import katsu.model.Client
 import katsu.model.ClientAddedModelEvent
 import katsu.model.Model
+import katsu.view.ChangeClientActivationUIEvent
 import katsu.view.ChangePictureRequestUIEvent
 import katsu.view.ClientCreateRequestUIEvent
 import katsu.view.ClientsLoadedEvent
 import katsu.view.JClientList
+import katsu.view.ShowActiveClientsUIEvent
 import mu.KotlinLogging.logger
 import java.awt.Dimension
 import java.io.File
@@ -19,10 +23,11 @@ import javax.swing.filechooser.FileSystemView
 
 
 class ClientListController(
-        bus: EventBus,
+        private val bus: EventBus,
         private val model: Model,
         private val clientList: JClientList,
-        private val pictureService: PictureService
+        private val pictureService: PictureService,
+        private val filter: FilterAndSort,
 ) {
     private val log = logger {}
 
@@ -33,7 +38,7 @@ class ClientListController(
     @Subscribe
     fun onClientsLoadedEvent(event: ClientsLoadedEvent) {
         log.trace { "on $event" }
-        clientList.clientsModel.addAll(model.clients)
+        clientList.addClients(model.clients)
     }
 
     @Subscribe
@@ -45,7 +50,7 @@ class ClientListController(
     @Subscribe
     fun onClientAddedModelEvent(event: ClientAddedModelEvent) {
         log.trace { "on $event" }
-        clientList.clientsModel.add(event.position, event.client)
+        clientList.addClient(event.position, event.client)
         clientList.selectionModel.setSelectionInterval(event.position, event.position)
     }
 
@@ -69,7 +74,25 @@ class ClientListController(
     @Subscribe
     fun onClientDeletedEvent(event: ClientDeletedEvent) {
         log.trace { "on $event" }
-        clientList.clientsModel.removeElement(event.client)
+        clientList.removeClient(event.client)
+    }
+
+    @Subscribe
+    fun onChangeClientActivationUIEvent(event: ChangeClientActivationUIEvent) {
+        log.trace { "on $event" }
+        model.currentClient.active = !model.currentClient.active
+        if (!model.currentClient.active && !filter.showInactiveClients) {
+            clientList.removeClient(model.currentClient)
+            model.currentClient = Client.prototype()
+        }
+    }
+
+    @Subscribe
+    fun onShowActiveClientsUIEvent(event: ShowActiveClientsUIEvent) {
+        log.trace { "on $event" }
+        filter.toggleShowInactiveClients()
+        clientList.applyFilter()
+        bus.post(FilterSortChangedEvent())
     }
 }
 

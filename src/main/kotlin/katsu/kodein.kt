@@ -7,10 +7,12 @@ import katsu.controller.ClientCrudController
 import katsu.controller.ClientDetailController
 import katsu.controller.ClientListController
 import katsu.controller.MainController
+import katsu.controller.MenuBarController
 import katsu.controller.TreatmentCrudController
 import katsu.controller.TreatmentDetailController
 import katsu.controller.TreatmentListController
 import katsu.logic.DataLoader
+import katsu.logic.FilterAndSort
 import katsu.logic.JsonDataLoader
 import katsu.logic.PictureService
 import katsu.model.Client
@@ -49,13 +51,14 @@ fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
     }
     bind<Model>() with singleton { Model(instance(), arrayListOf(), Client.prototype(), Treatment.prototype()) }
     bind<PictureService>() with singleton { PictureService(File(env.appDirectory, "pictures")) }
+    bind<FilterAndSort>() with singleton { FilterAndSort() }
 
     // view
     bind<JMainWindow>() with singleton { JMainWindow("${env.windowTitle} - v${MetaInfo.properties.appVersion}", instance(), instance(), instance()) }
     bind<KatsuMenuBar>() with singleton { KatsuMenuBar(instance()) }
     bind<JMainPanel>() with singleton { JMainPanel(instance(), instance()) }
     bind<JClientMaster>() with singleton { JClientMaster(instance(), instance()) }
-    bind<JClientList>() with singleton { JClientList(instance()) }
+    bind<JClientList>() with singleton { JClientList(instance(), instance()) }
     bind<JClientDetail>() with singleton { JClientDetail() }
     bind<JTreatmentList>() with singleton { JTreatmentList(instance()) }
     bind<JTreatmentMaster>() with singleton { JTreatmentMaster(instance(), instance(), instance()) }
@@ -63,7 +66,9 @@ fun applicationKodein(env: Env) = Kodein.Module("Application Module") {
 
     // controller
     bind<MainController>() with eagerSingleton { MainController(instance(), instance(), instance(), instance()) }
-    bind<ClientListController>() with eagerSingleton { ClientListController(instance(), instance(), instance(), instance()) }
+    bind<MenuBarController>() with eagerSingleton { MenuBarController(instance(), instance(), instance()) }
+
+    bind<ClientListController>() with eagerSingleton { ClientListController(instance(), instance(), instance(), instance(), instance()) }
     bind<ClientDetailController>() with eagerSingleton { ClientDetailController(instance(), instance(), instance()) }
     bind<ClientCrudController>() with eagerSingleton { ClientCrudController(instance(), instance(), instance(), instance(), instance()) }
 

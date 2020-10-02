@@ -20,3 +20,7 @@ class ClosingUIEvent
 class ChangePictureRequestUIEvent
 
 class DeleteClientRequestUiEvent
+
+class ChangeClientActivationUIEvent
+
+class ShowActiveClientsUIEvent

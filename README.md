@@ -20,6 +20,7 @@ A shiatsu management desktop application.
 * new property client: active, birthday, ~~ABC~~
 * treatment counter/days ago
 * store preferences in JSON data (window size/position, recent folders, ...)
+* dynamically show create button when new client
 
 ## Future
 
