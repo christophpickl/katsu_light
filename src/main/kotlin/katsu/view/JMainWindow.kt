@@ -10,7 +10,6 @@ import javax.swing.BorderFactory
 import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.JScrollPane
-import javax.swing.ScrollPaneConstants
 import javax.swing.WindowConstants
 
 class JMainWindow(
@@ -46,6 +45,7 @@ class JMainPanel(
         clientMaster: JClientMaster,
         clientList: JClientList
 ) : JPanel(GridBagLayout()) {
+
     private val listWidth = 200
 
     init {
@@ -57,9 +57,7 @@ class JMainPanel(
         c.fill = GridBagConstraints.BOTH
         c.weightx = 0.0
         c.weighty = 1.0
-        add(JScrollPane(clientList).apply {
-            horizontalScrollBarPolicy = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
-            verticalScrollBarPolicy = ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS
+        add(JScrollPane(clientList).hScrollOnly().apply {
             preferredSize = Dimension(listWidth, preferredSize.height)
         }, c)
 

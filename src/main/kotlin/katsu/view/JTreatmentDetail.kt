@@ -27,6 +27,6 @@ class JTreatmentDetail() : JPanel(GridBagLayout()) {
         c.weightx = 1.0
         c.weighty = 1.0
         c.fill = GridBagConstraints.BOTH
-        add(JScrollPane(inpText), c)
+        add(JScrollPane(inpText).hScrollOnly(), c)
     }
 }

@@ -79,6 +79,7 @@ private fun Client.toClientJson() = ClientJson(
         treatments = treatments.map { it.toTreatmentJson() }.toMutableList(),
         category = category.jsonValue,
         active = active,
+        birthday = birthday,
 )
 
 private fun Treatment.toTreatmentJson() = TreatmentJson(
@@ -103,6 +104,7 @@ private data class ClientJson(
         val category: String,
         val active: Boolean,
         val treatments: MutableList<TreatmentJson>,
+        val birthday: LocalDate?,
 ) {
     fun toClient() = Client(
             id = UUID.fromString(id),
@@ -111,7 +113,8 @@ private data class ClientJson(
             treatments = treatments.map { it.toTreatment() }.toMutableList(),
             category = ClientCategory.byJsonValue(category),
             picture = Picture.DefaultPicture,
-            active = active
+            active = active,
+            birthday = birthday
     )
 }
 

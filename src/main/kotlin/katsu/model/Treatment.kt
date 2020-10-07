@@ -14,7 +14,23 @@ data class Treatment(
         fun prototype() = Treatment(
                 number = PROTOTYPE_NUMBER,
                 date = LocalDate.now(),
-                note = ""
+                note = """
+                    STATE (feeling, energy, share, changes):
+                    * 
+                    
+                    CONTENT (positions, meridians, techniques):
+                    * 
+                    
+                    DIAGNOSIS (behavior, tissue, energetical):
+                    * 
+                    
+                    FEEDBACK (feel now/changes, sensation, un/comfortable):
+                    * 
+                    
+                    NOTES (upcoming, donation, homework):
+                    * 
+                    
+                """.trimIndent()
         )
     }
 

@@ -11,6 +11,7 @@ import katsu.view.ClosingUIEvent
 import katsu.view.DeleteClientRequestUiEvent
 import katsu.view.JClientDetail
 import mu.KotlinLogging.logger
+import java.time.LocalDate
 import javax.swing.JOptionPane
 
 class ClientCrudController(
@@ -69,6 +70,9 @@ class ClientCrudController(
 
         model.currentClient.firstName = clientDetail.inpFirstName.text
         model.currentClient.note = clientDetail.inpText.text
+        model.currentClient.birthday = clientDetail.inpBirthday.text.let {
+            if (it.isEmpty()) null else LocalDate.parse(it, Client.birthdayFormat)
+        }
 
         treatmentCrud.updateModel()
 

@@ -30,5 +30,4 @@ class ClientDetailController(
         log.trace { "on $event" }
         model.currentClient = Client.prototype()
     }
-
 }

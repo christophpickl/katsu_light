@@ -17,7 +17,7 @@ A shiatsu management desktop application.
 ### Iteration 3
 
 * gadsu importer
-* new property client: active, birthday, ~~ABC~~
+* ~~new property client: active, birthday, ABC~~
 * treatment counter/days ago
 * store preferences in JSON data (window size/position, recent folders, ...)
 * dynamically show create button when new client
@@ -26,6 +26,7 @@ A shiatsu management desktop application.
 
 ### Iteration X
 
+* global exception handler
 * searching/filtering/sorting of client list
 * auto backup on startup (keep x recent backups)
 * versions gradle plugin

@@ -23,6 +23,27 @@ class JClientList(
 
     private val unfilteredClients = mutableListOf<Client>()
 
+    private val log = logger {}
+    private val clientsModel = DefaultListModel<Client>()
+
+    init {
+        layoutOrientation = VERTICAL
+        model = clientsModel
+        cellRenderer = ClientCellRenderer()
+        selectionMode = ListSelectionModel.SINGLE_SELECTION
+        addListSelectionListener { e ->
+            // TODO not listen to selection, but to click/keyboard-up-down
+            if (!e.valueIsAdjusting && selectedIndex != -1) { // if clearSelection() => index is -1
+                val selectedClient = clientsModel.elementAt(selectedIndex)
+                log.debug { "List selection changed to: $selectedClient" }
+                bus.post(ClientSelectedUIEvent(selectedClient))
+            }
+        }
+
+        // TODO this doesnt work properly; delayed right click; also ATM right click doesnt change selection, should it?
+        addMouseListener(ClientPopupListener(bus, this))
+    }
+
     fun addClient(position: Int, client: Client) {
         clientsModel.add(position, client)
         unfilteredClients.add(position, client)
@@ -42,32 +63,18 @@ class JClientList(
         clientsModel.removeAllElements()
         clientsModel.addAll(filter.filter(unfilteredClients))
     }
-
-    private val log = logger {}
-    private val clientsModel = DefaultListModel<Client>()
-
-    init {
-        layoutOrientation = VERTICAL
-        model = clientsModel
-        cellRenderer = ClientCellRenderer()
-        selectionMode = ListSelectionModel.SINGLE_SELECTION
-        addListSelectionListener { e ->
-            // TODO not listen to selection, but to click/keyboard-up-down
-            if (!e.valueIsAdjusting && selectedIndex != -1) { // if clearSelection() => index is -1
-                val selectedClient = clientsModel.elementAt(selectedIndex)
-                log.debug { "List selection changed to: $selectedClient" }
-                bus.post(ClientSelectedUIEvent(selectedClient))
-            }
-        }
-
-        addMouseListener(ClientPopupListener(bus, this))
-    }
 }
 
 private class ClientPopupListener(
         private val bus: EventBus,
         private val list: JClientList
 ) : MouseAdapter() {
+    //    override fun mousePressed(e: MouseEvent) {
+//        val pressedIndex = list.locationToIndex(e.point)
+//        println(pressedIndex)
+//        list.selectedIndex = pressedIndex
+////        list.selectedIndex = e.point
+//    }
     override fun mouseClicked(e: MouseEvent) {
         if (e.clickCount == 1 && e.button == MouseEvent.BUTTON3) {
             val client = list.selectedValue

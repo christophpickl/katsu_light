@@ -12,6 +12,7 @@ import javax.swing.JTextField
 class JClientDetail : JPanel(GridBagLayout()) {
 
     val inpFirstName = JTextField()
+    val inpBirthday = JTextField(10)
     val inpText = JTextArea()
 
     init {
@@ -28,23 +29,23 @@ class JClientDetail : JPanel(GridBagLayout()) {
         c.fill = GridBagConstraints.HORIZONTAL
         add(inpFirstName, c)
 
+        c.gridx++
+        c.weightx = 0.0
+        add(inpBirthday, c)
+
         c.gridx = 0
         c.gridy++
         c.weightx = 1.0
         c.weighty = 1.0
-        c.gridwidth = 2
+        c.gridwidth = 3
         c.fill = GridBagConstraints.BOTH
-        add(JScrollPane(inpText), c)
+        add(JScrollPane(inpText).hScrollOnly(), c)
     }
-
-//
-//    @Subscribe
-//    fun onClientSavedEvent(event: ClientSavedEvent) {
-//        clientId = event.client.id
-//    }
 
     fun updateUi(client: Client) {
         inpFirstName.text = client.firstName
+        println("update: $client")
+        inpBirthday.text = client.birthdayFormatted ?: ""
         inpText.text = client.note
     }
 }

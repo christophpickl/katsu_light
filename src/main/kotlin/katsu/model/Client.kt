@@ -2,6 +2,8 @@ package katsu.model
 
 import katsu.logic.Images
 import java.awt.Image
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.swing.ImageIcon
 
@@ -10,18 +12,42 @@ data class Client(
         var firstName: String,
         val treatments: MutableList<Treatment>,
         var note: String,
+        var birthday: LocalDate?,
         var category: ClientCategory,
         var active: Boolean,
         var picture: Picture,
 ) {
     companion object {
+        val birthdayFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
+
         fun prototype() = Client(
                 id = UUID.randomUUID(),
                 firstName = "",
                 treatments = arrayListOf(),
-                note = "",
+                note = """
+                    FACTS:
+                    * Origin/Living: 
+                    * Marital Status/Children: 
+                    * Work: 
+                    * Hobbies: 
+                    * Main Issues: 
+                    * Expectations: 
+                    
+                    MEDICAL (complaints, accidents, injuries, treatments):
+                    * 
+                    
+                    TCM (temp, eat, sleep, digest, mens):
+                    * 
+                    
+                    LIFESTYLE (drugs, sports, personality, work, family, friends, love):
+                    * 
+                    
+                    BO SHIN (constituion, posture, behavior, voice, skin, face):
+                    * 
+                """.trimIndent(),
                 category = ClientCategory.Normal,
                 picture = Picture.DefaultPicture,
+                birthday = null,
                 active = true,
         )
     }
@@ -30,8 +56,10 @@ data class Client(
             number = treatments.size + 1
     )
 
+    val birthdayFormatted get() = birthday?.let { birthdayFormat.format(it) }
+
     private val lazyString by lazy {
-        "Client[$firstName, treatments: ${treatments.size}]"
+        "Client[$firstName, treatments: ${treatments.size}, birthday: $birthday]"
     }
 
     override fun toString() = lazyString
